@@ -1,24 +1,17 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const [deployer, relayer] = await ethers.getSigners();
+  const axelarGatewayAddress = "";
+  const axelarGasReceiverAddress = "";
 
-  const Oracle = await ethers.getContractFactory("PriceFeed");
-  const oracle = await Oracle.deploy(relayer.address);
+  const Ojo = await ethers.getContractFactory("Ojo");
+  const ojo = await Ojo.deploy(axelarGatewayAddress, axelarGasReceiverAddress);
 
-  await oracle.waitForDeployment();
+  await ojo.waitForDeployment();
 
   console.log(
-    `Oracle deployed to ${await oracle.getAddress()}`
+    `Ojo deployed to ${await ojo.getAddress()}`
   );
-
-  console.log(
-    `owner address ${deployer.address}`
-  )
-
-  console.log(
-    `relayer address ${relayer.address}`
-  )
 }
 
 main().catch((error) => {
