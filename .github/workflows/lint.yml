@@ -1,0 +1,35 @@
+name: Lint
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - release/**
+
+jobs:
+  solhint-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+      - uses: technote-space/get-diff-action@v6.1.2
+        with:
+          PATTERNS: |
+            contracts/*
+            test/*
+
+      - name: Install packages
+        if: env.GIT_DIFF
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install solhint
+        if: env.GIT_DIFF
+        run: |
+          yarn install
+
+      - name: Run solhint
+        if: env.GIT_DIFF
+        run: |
+          make lint-contract
