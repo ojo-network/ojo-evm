@@ -10,10 +10,21 @@ import "./OjoTypes.sol";
 contract Ojo is IOjo, AxelarExecutable {
     IAxelarGasService public immutable gasReceiver;
 
+    string public ojoChain;
+
+    string public ojoAddress;
+
     mapping(bytes32 => OjoTypes.PriceData) public priceData;
 
-    constructor(address gateway_, address gasReceiver_) AxelarExecutable(gateway_) {
+    constructor(
+        address gateway_,
+        address gasReceiver_,
+        string memory ojoChain_,
+        string memory ojoAddress_
+    ) AxelarExecutable(gateway_) {
         gasReceiver = IAxelarGasService(gasReceiver_);
+        ojoChain = ojoChain_;
+        ojoAddress = ojoAddress_;
     }
 
     function callContractMethodWithOjoPriceData(
@@ -28,18 +39,18 @@ contract Ojo is IOjo, AxelarExecutable {
             contractAddress,
             commandSelector,
             commandParams,
-            block.timestamp    // used for resolve time
+            block.timestamp // used for resolve time
         );
 
         gasReceiver.payNativeGasForContractCall{value: msg.value}(
             address(this),
-            OjoTypes.OjoChain,
-            OjoTypes.OjoAddress,
+            ojoChain,
+            ojoAddress,
             payloadWithVersion,
             msg.sender
         );
 
-        gateway.callContract(OjoTypes.OjoChain, OjoTypes.OjoAddress, payloadWithVersion);
+        gateway.callContract(ojoChain, ojoAddress, payloadWithVersion);
     }
 
     function _execute(
@@ -113,6 +124,8 @@ contract Ojo is IOjo, AxelarExecutable {
             = getPriceValueAndResolveTime(baseAssetName);
         (uint256 quotePrice, uint256 quoteResolveTime)
             = getPriceValueAndResolveTime(quoteAssetName);
+
+        require(quotePrice > 0, "Quote price is 0");
 
         uint256 price = (basePrice * 10**18) / quotePrice;
 
