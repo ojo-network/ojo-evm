@@ -33,17 +33,9 @@ contract Ojo is IOjo, AxelarExecutable {
         bytes4 commandSelector,
         bytes calldata commandParams
     ) external payable {
-        OjoTypes.EncodedData memory packet = OjoTypes.EncodedData({
-            assetNames: assetNames,
-            contractAddress: contractAddress,
-            commandSelector: commandSelector,
-            commandParams: commandParams,
-            timestamp: block.timestamp
-        });
-
         bytes memory payloadWithVersion = abi.encodePacked(
             bytes4(uint32(0)), // version number
-            abi.encode(packet) // payload
+            abi.encode(assetNames, contractAddress, commandSelector, commandParams, block.timestamp) // payload
         );
 
         gasReceiver.payNativeGasForContractCall{value: msg.value}(
