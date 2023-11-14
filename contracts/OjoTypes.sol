@@ -33,17 +33,4 @@ library OjoTypes {
         // Quote asset of asset pair
         uint256 quoteResolveTime;
     }
-
-    struct EncodedData {
-        // Assets that you would like to encode & relay
-        bytes32[] assetNames;
-        // Address for the contract to call later
-        address contractAddress;
-        // Command selector
-        bytes4 commandSelector;
-        // Params to send back to the execute contract
-        bytes commandParams;
-        // Block timestamp
-        uint256 timestamp;
-    }
 }
