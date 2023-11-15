@@ -5,6 +5,8 @@ library OjoTypes {
     bytes32 constant USD = bytes32("USD");
     uint256 constant USD_PRICE= 10**9;
 
+    bytes4 constant EMPTY_COMMAND_SELECTOR = bytes4(keccak256(bytes("")));
+
     struct PriceData {
         // Name of asset ex: ATOM
         bytes32 assetName;

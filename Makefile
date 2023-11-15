@@ -1,7 +1,7 @@
-test-unit-contract:
+test-unit:
 	yarn hardhat test
 
-compile-contract:
+compile-contracts:
 	yarn hardhat compile && yarn hardhat export-abi
 
 lint-contract:

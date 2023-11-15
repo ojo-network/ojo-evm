@@ -10,11 +10,11 @@ import "./OjoTypes.sol";
 contract Ojo is IOjo, AxelarExecutable {
     IAxelarGasService public immutable gasReceiver;
 
-    string public ojoChain;
+    string private ojoChain;
 
-    string public ojoAddress;
+    string private ojoAddress;
 
-    mapping(bytes32 => OjoTypes.PriceData) public priceData;
+    mapping(bytes32 => OjoTypes.PriceData) private priceData;
 
     constructor(
         address gateway_,
@@ -50,36 +50,40 @@ contract Ojo is IOjo, AxelarExecutable {
     }
 
     function _execute(
-        string calldata sourceChain,
-        string calldata sourceAddress,
+        string calldata,
+        string calldata,
         bytes calldata payload
     ) internal override {
         (
-            OjoTypes.PriceData[] memory _priceData,
+            bytes memory _encodedPriceData,
             bytes32[] memory assetNames,
             address contractAddress,
             bytes4 commandSelector,
             bytes memory commandParams
         ) = abi.decode(
             payload,
-            (OjoTypes.PriceData[], bytes32[], address, bytes4, bytes)
+            (bytes, bytes32[], address, bytes4, bytes)
         );
 
+        OjoTypes.PriceData[] memory _priceData = abi.decode(_encodedPriceData, (OjoTypes.PriceData[]));
         postPriceData(_priceData);
 
-        (bool success, bytes memory result) = contractAddress.call(
-            abi.encodeWithSelector(commandSelector, assetNames, commandParams)
-        );
+        // Call contract only if command selector is non empty
+        if (commandSelector != OjoTypes.EMPTY_COMMAND_SELECTOR) {
+            (bool success, bytes memory result) = contractAddress.call(
+                abi.encodeWithSelector(commandSelector, assetNames, commandParams)
+            );
 
-        if (!success) {
-            if (result.length == 0) {
-                require(success, 'Failed with no reason');
-            } else {
-                // rethrow same error
-                assembly {
-                    let start := add(result, 0x20)
-                    let end := add(result, mload(result))
-                    revert(start, end)
+            if (!success) {
+                if (result.length == 0) {
+                    require(success, 'Failed with no reason');
+                } else {
+                    // rethrow same error
+                    assembly {
+                        let start := add(result, 0x20)
+                        let end := add(result, mload(result))
+                        revert(start, end)
+                    }
                 }
             }
         }
