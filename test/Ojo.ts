@@ -48,7 +48,7 @@ describe("Deploy OjoContract", function () {
       const ojoChain = "ojoChain"
       const ojoAddress = "ojoAddress"
 
-      const mockGatewayArtifact = require("/Users/ryanbajollari/ojo-evm/artifacts/contracts/test-util/MockGateway.sol/MockAxelarGateway.json");
+      const mockGatewayArtifact = require("~/ojo-evm/artifacts/contracts/test-util/MockGateway.sol/MockAxelarGateway.json");
 
       const MockGateway = await ethers.getContractFactory(mockGatewayArtifact.abi, mockGatewayArtifact.bytecode);
       const mockGateway = await MockGateway.deploy(authModule.address, tokenDeployer.address)

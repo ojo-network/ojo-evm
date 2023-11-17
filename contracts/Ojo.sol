@@ -10,11 +10,11 @@ import "./OjoTypes.sol";
 contract Ojo is IOjo, AxelarExecutable {
     IAxelarGasService public immutable gasReceiver;
 
-    string private ojoChain;
+    string public ojoChain;
 
-    string private ojoAddress;
+    string public ojoAddress;
 
-    mapping(bytes32 => OjoTypes.PriceData) private priceData;
+    mapping(bytes32 => OjoTypes.PriceData) public priceData;
 
     constructor(
         address gateway_,
@@ -55,17 +55,16 @@ contract Ojo is IOjo, AxelarExecutable {
         bytes calldata payload
     ) internal override {
         (
-            bytes memory _encodedPriceData,
+            OjoTypes.PriceData[] memory _priceData,
             bytes32[] memory assetNames,
             address contractAddress,
             bytes4 commandSelector,
             bytes memory commandParams
         ) = abi.decode(
             payload,
-            (bytes, bytes32[], address, bytes4, bytes)
+            (OjoTypes.PriceData[], bytes32[], address, bytes4, bytes)
         );
 
-        OjoTypes.PriceData[] memory _priceData = abi.decode(_encodedPriceData, (OjoTypes.PriceData[]));
         postPriceData(_priceData);
 
         // Call contract only if command selector is non empty
