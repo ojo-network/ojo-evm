@@ -21,6 +21,19 @@ contract MockOjoContract {
         ojo = IOjo(ojo_);
     }
 
+    function relayOjoPriceData(
+        bytes32[] calldata assetNames
+    ) external payable {
+        bytes memory commandParams = "0x";
+
+        ojo.callContractMethodWithOjoPriceData(
+            assetNames,
+            address(this),
+            OjoTypes.EMPTY_COMMAND_SELECTOR,
+            commandParams
+        );
+    }
+
     function setBalanceWithOjoPriceData(
         bytes32[] calldata assetNames,
         uint256 multiplier
