@@ -4,7 +4,7 @@ test-unit:
 compile-contracts:
 	yarn hardhat compile && yarn hardhat export-abi
 
-lint-contract:
+lint-contracts:
 	yarn solhint 'contracts/**/*.sol'
 
 update-abi:

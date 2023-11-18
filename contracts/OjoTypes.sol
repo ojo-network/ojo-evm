@@ -12,7 +12,7 @@ library OjoTypes {
         bytes32 assetName;
         // Price in of asset in USD
         uint256 price;
-        // Latest time price data can be posted before being regarded as stale
+        // Time request was sent to ojo for price data
         uint256 resolveTime;
         // Median data of asset
         MedianData medianData;
@@ -30,9 +30,9 @@ library OjoTypes {
     struct Price {
         // Price of asset pair
         uint256 price;
-        // Base asset of asset pair
+        // Base asset resolve time of asset pair
         uint256 baseResolveTime;
-        // Quote asset of asset pair
+        // Quote asset resolve time of asset pair
         uint256 quoteResolveTime;
     }
 }

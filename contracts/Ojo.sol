@@ -4,15 +4,18 @@ pragma solidity ^0.8.20;
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./IOjo.sol";
 import "./OjoTypes.sol";
 
-contract Ojo is IOjo, AxelarExecutable {
+contract Ojo is IOjo, AxelarExecutable, Ownable {
     IAxelarGasService public immutable gasReceiver;
 
     string public ojoChain;
 
     string public ojoAddress;
+
+    uint256 public resolveWindow;
 
     mapping(bytes32 => OjoTypes.PriceData) public priceData;
 
@@ -20,11 +23,13 @@ contract Ojo is IOjo, AxelarExecutable {
         address gateway_,
         address gasReceiver_,
         string memory ojoChain_,
-        string memory ojoAddress_
-    ) AxelarExecutable(gateway_) {
+        string memory ojoAddress_,
+        uint256 resolveWindow_
+    ) AxelarExecutable(gateway_) Ownable(msg.sender) {
         gasReceiver = IAxelarGasService(gasReceiver_);
         ojoChain = ojoChain_;
         ojoAddress = ojoAddress_;
+        resolveWindow = resolveWindow_;
     }
 
     function callContractMethodWithOjoPriceData(
@@ -90,7 +95,7 @@ contract Ojo is IOjo, AxelarExecutable {
 
     function postPriceData(OjoTypes.PriceData[] memory _priceData) internal {
         for(uint256 i = 0; i < _priceData.length; i++){
-            if (_priceData[i].resolveTime > block.timestamp) {
+            if (_priceData[i].resolveTime + resolveWindow > block.timestamp) {
                 priceData[_priceData[i].assetName] = _priceData[i];
             }
         }
@@ -143,5 +148,17 @@ contract Ojo is IOjo, AxelarExecutable {
         }
 
         return (priceData[assetName].price, priceData[assetName].resolveTime);
+    }
+
+    function updateOjoChain(string calldata ojoChain_) external onlyOwner {
+        ojoChain = ojoChain_;
+    }
+
+    function updateOjoAddress(string calldata ojoAddress_) external onlyOwner {
+        ojoAddress = ojoAddress_;
+    }
+
+    function updateResolveWindow(uint256 resolveWindow_) external onlyOwner {
+        resolveWindow = resolveWindow_;
     }
 }
