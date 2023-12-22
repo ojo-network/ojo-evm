@@ -26,7 +26,7 @@ contract MockOjoContract {
     ) external payable {
         bytes memory commandParams = "0x";
 
-        ojo.callContractMethodWithOjoPriceData(
+        ojo.callContractMethodWithOjoPriceData{value: msg.value}(
             assetNames,
             address(this),
             OjoTypes.EMPTY_COMMAND_SELECTOR,
@@ -40,7 +40,7 @@ contract MockOjoContract {
     ) external payable {
         bytes memory commandParams = abi.encodePacked(multiplier);
 
-        ojo.callContractMethodWithOjoPriceData(
+        ojo.callContractMethodWithOjoPriceData{value: msg.value}(
             assetNames,
             address(this),
             MockOjoContract.setBalance.selector,
