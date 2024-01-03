@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol";
+import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./IOjo.sol";
 import "./OjoTypes.sol";
@@ -52,6 +53,36 @@ contract Ojo is IOjo, AxelarExecutable, Ownable {
         );
 
         gateway.callContract(ojoChain, ojoAddress, payloadWithVersion);
+    }
+
+    function callContractMethodWithOjoPriceDataAndToken(
+        bytes32[] calldata assetNames,
+        address contractAddress,
+        bytes4 commandSelector,
+        bytes calldata commandParams,
+        string memory symbol,
+        uint256 amount
+    ) external payable {
+        address tokenAddress = gateway.tokenAddresses(symbol);
+        IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
+        IERC20(tokenAddress).approve(address(gateway), amount);
+
+        bytes memory payloadWithVersion = abi.encodePacked(
+            bytes4(uint32(0)), // version number
+            abi.encode(assetNames, contractAddress, commandSelector, commandParams, block.timestamp) // payload
+        );
+
+        gasReceiver.payNativeGasForContractCallWithToken{value: msg.value}(
+            address(this),
+            ojoChain,
+            ojoAddress,
+            payloadWithVersion,
+            symbol,
+            amount,
+            msg.sender
+        );
+
+        gateway.callContractWithToken(ojoChain, ojoAddress, payloadWithVersion, symbol, amount);
     }
 
     function _execute(

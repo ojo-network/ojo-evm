@@ -14,7 +14,6 @@ interface IOjo {
     /// @param timestamp Time of price data being posted.
     event PriceDataPosted(uint256 indexed timestamp);
 
-
     /// @notice Triggers the relaying of price data from the Ojo Network to the Ojo contract and uses said price data
     /// when calling the specified contract method at the specified contract address.
     /// @dev Reverts if contract method call does not succeed.
@@ -28,6 +27,25 @@ interface IOjo {
         address contractAddress,
         bytes4 commandSelector,
         bytes calldata commandParams
+    ) external payable;
+
+    /// @notice Triggers the relaying of price data from the Ojo Network to the Ojo contract with an ERC-20 token for
+    /// and uses said price data when calling the specified contract method at the specified contract address.
+    /// @dev Reverts if contract method call does not succeed.
+    /// @param assetNames List of assets to be relayed from the Ojo Network and used by the contract method.
+    /// @param contractAddress Address of contract containing the contract method to be called.
+    /// @param commandSelector First four bytes of the Keccak-256 hash of the contract method to be called.
+    /// @param commandParams Abi encoded parameters to be used when calling the contract method (excluding assetNames
+    /// parameter).
+    /// @param symbol The symbol of the token to be sent with the call.
+    /// @param amount The amount of tokens to be sent with the call.
+    function callContractMethodWithOjoPriceDataAndToken(
+        bytes32[] calldata assetNames,
+        address contractAddress,
+        bytes4 commandSelector,
+        bytes calldata commandParams,
+        string memory symbol,
+        uint256 amount
     ) external payable;
 
     /// @notice Returns the price data of a specified asset.
