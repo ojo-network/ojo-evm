@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol";
+import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol";
 import "./IOjo.sol";
 import "./OjoTypes.sol";
 
@@ -34,6 +35,27 @@ contract MockOjoContract {
         );
     }
 
+    function relayOjoPriceDataWithToken(
+        bytes32[] calldata assetNames,
+        string memory symbol,
+        uint256 amount,
+        address tokenAddress
+    ) external payable {
+        IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
+        IERC20(tokenAddress).approve(address(ojo), amount);
+
+        bytes memory commandParams = "0x";
+
+        ojo.callContractMethodWithOjoPriceDataAndToken{value: msg.value}(
+            assetNames,
+            address(this),
+            OjoTypes.EMPTY_COMMAND_SELECTOR,
+            commandParams,
+            symbol,
+            amount
+        );
+    }
+
     function setBalanceWithOjoPriceData(
         bytes32[] calldata assetNames,
         uint256 multiplier
@@ -45,6 +67,28 @@ contract MockOjoContract {
             address(this),
             MockOjoContract.setBalance.selector,
             commandParams
+        );
+    }
+
+    function setBalanceWithOjoPriceDataWithToken(
+        bytes32[] calldata assetNames,
+        uint256 multiplier,
+        string memory symbol,
+        uint256 amount,
+        address tokenAddress
+    ) external payable {
+        IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
+        IERC20(tokenAddress).approve(address(ojo), amount);
+
+        bytes memory commandParams = abi.encodePacked(multiplier);
+
+        ojo.callContractMethodWithOjoPriceDataAndToken{value: msg.value}(
+            assetNames,
+            address(this),
+            MockOjoContract.setBalance.selector,
+            commandParams,
+            symbol,
+            amount
         );
     }
 
