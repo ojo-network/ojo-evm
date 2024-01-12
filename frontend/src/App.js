@@ -72,7 +72,7 @@ function App() {
     }
     const ojoContract = new ethers.Contract(ojoAddress, Ojo.abi, signer);
 
-    const assetNamesArray = assetNames.split(',').map(name => ethers.encodeBytes32String(name.trim()));
+    const assetNamesArray = assetNames.split(',').map(name => ethers.encodeBytes32String(name));
     try {
       const data = await ojoContract.getPriceDataBulk(assetNamesArray);
       if (!data || data.length === 0) {
@@ -107,10 +107,9 @@ function App() {
           if (assetNames.length === 0 || !data || data.length === 0 || data.assetName === undefined || data.price === undefined) {
             return <div key={index}>No data available for this asset.</div>;
           }
-
           return (
             <div key={index}>
-              <p>Asset: {ethers.encodeBytes32String(data.assetName)}</p>
+              <p>Asset: {ethers.decodeBytes32String(data.assetName)}</p>
               <p>Price: {data.price.toString()}</p>
             </div>
           );
