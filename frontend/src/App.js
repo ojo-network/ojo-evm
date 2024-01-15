@@ -2,20 +2,28 @@ import { useEffect, useState } from 'react';
 import Ojo from './artifacts/contracts/Ojo.sol/Ojo.json';
 import MockOjo from './artifacts/contracts/MockOjoContract.sol/MockOjoContract.json';
 import IERC20 from './artifacts/@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol/IERC20.json'
+import AssetForm from './components/AssetForm';
+import SymbolDropdown from './components/SymbolDropdown';
+import PriceTable from './components/PriceTable';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 const ethers = require("ethers")
 
 function App() {
-  const [assetNames, setAssetNames] = useState('');
+  const [assetNames, setAssetNames] = useState([]);
   const [symbol, setSymbol] = useState('');
   const [amount, setAmount] = useState('');
-  const [tokenAddress, setTokenAddress] = useState('');
   const [priceData, setPriceData] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  const symbolMap = {
+    "aUSDC": "0x254d06f33bDc5b8ee05b2ea472107E300226659A"
+  };
 
   let signer = null;
   let provider;
   if (window.ethereum == null) {
-      console.log("MetaMask not installed; using read-only defaults")
+      alert("MetaMask not installed; using read-only defaults")
       provider = ethers.getDefaultProvider()
   } else {
       provider = new ethers.BrowserProvider(window.ethereum)
@@ -38,12 +46,15 @@ function App() {
   })
 
   const relayOjoPriceDataWithToken = async () => {
-    if (!assetNames || !symbol || !amount || !tokenAddress) return;
-    const tokenContract = new ethers.Contract(tokenAddress, IERC20.abi, signer);
+    if (assetNames.length === 0 || !symbol || !amount) {
+      setPriceData([]);
+      return
+    }
+    const tokenContract = new ethers.Contract(symbolMap[symbol], IERC20.abi, signer);
     const mockOjoContract = new ethers.Contract(mockOjoAddress, MockOjo.abi, signer);
 
     if (typeof window.ethereum !== "undefined") {
-      const assetNamesArray = assetNames.split(',').map(name => ethers.encodeBytes32String(name.trim()));
+      const assetNamesArray = assetNames.map(name => ethers.encodeBytes32String(name.trim()));
       try {
         // increase the allowance of MockOjo contract
         const tx1 = await tokenContract.approve(mockOjoAddress, amount);
@@ -53,26 +64,26 @@ function App() {
           assetNamesArray,
           symbol,
           amount,
-          tokenAddress,
+          symbolMap[symbol],
           { value: ethers.parseEther("0.01") }
         );
         await tx2.wait();
         alert('Ojo Price Data relay request sent successfully!');
       } catch(error) {
-        alert(error)
         console.error('Error sending Ojo Price Data relay request:', error);
+        alert('Failed to send Ojo Price Data relay request')
       }
     }
   }
 
   const displayRelayedPrices = async () => {
-    if (!assetNames || assetNames.length === 0) {
+    if (assetNames.length === 0) {
       setPriceData([]);
       return
     }
     const ojoContract = new ethers.Contract(ojoAddress, Ojo.abi, signer);
 
-    const assetNamesArray = assetNames.split(',').map(name => ethers.encodeBytes32String(name));
+    const assetNamesArray = assetNames.map(name => ethers.encodeBytes32String(name));
     try {
       const data = await ojoContract.getPriceDataBulk(assetNamesArray);
       if (!data || data.length === 0) {
@@ -83,7 +94,7 @@ function App() {
       }
     } catch (error) {
       console.error('Error fetching price data:', error);
-      alert('Failed to fetch price data.');
+      alert('Failed to fetch price data');
     }
   };
 
@@ -96,25 +107,21 @@ function App() {
         </div>
         <div className="custom-buttons">
           <button onClick ={relayOjoPriceDataWithToken}>Relay Ojo Price Data</button>
-          <button onClick ={displayRelayedPrices}>DisplayRelayedPrices</button>
+          <button onClick ={displayRelayedPrices}>Display Relayed Prices</button>
         </div>
-      <input type="text" value={assetNames} onChange={(e) => setAssetNames(e.target.value)} placeholder="Enter asset names separated by commas" />
-      <input type="text" value={symbol} onChange={(e) => setSymbol(e.target.value)} placeholder="Enter token symbol" />
-      <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Enter amount" />
-      <input type="text" value={tokenAddress} onChange={(e) => setTokenAddress(e.target.value)} placeholder="Enter token address" />
-      <div>
-        {priceData.map((data, index) => {
-          if (assetNames.length === 0 || !data || data.length === 0 || data.assetName === undefined || data.price === undefined) {
-            return <div key={index}>No data available for this asset.</div>;
-          }
-          return (
-            <div key={index}>
-              <p>Asset: {ethers.decodeBytes32String(data.assetName)}</p>
-              <p>Price: {data.price.toString()}</p>
-            </div>
-          );
-        })}
-      </div>
+        <AssetForm
+          assetNames={assetNames}
+          setAssetNames={setAssetNames}
+          selectAll={selectAll}
+          setSelectAll={setSelectAll}
+        />
+        <SymbolDropdown
+          symbolMap={symbolMap}
+          symbol={symbol}
+          setSymbol={setSymbol}
+        />
+        <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Enter fee token amount" />
+        <PriceTable priceData={priceData} />
       </div>
     </div>
   );
