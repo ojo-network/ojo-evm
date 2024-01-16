@@ -29,7 +29,7 @@ const AssetForm = ({ assetNames, setAssetNames, selectAll, setSelectAll }) => {
   return (
     <Form>
       <Form.Check
-        type="switch"
+        type="checkbox"
         id="switch-select-all"
         label="SELECT ALL"
         inline
@@ -38,7 +38,7 @@ const AssetForm = ({ assetNames, setAssetNames, selectAll, setSelectAll }) => {
       />
       {availableAssets.map((asset, index) => (
         <Form.Check
-          type="switch"
+          type="checkbox"
           id={`switch-${asset}`}
           label={asset}
           inline
