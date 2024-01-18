@@ -1,7 +1,9 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 
-const SymbolDropdown = ({ symbolMap, symbol, setSymbol }) => {
+const SymbolDropdown = ({ symbol, setSymbol }) => {
+  const feeTokens = ["aUSDC"];
+
   const handleSelectSymbol = (key) => {
     setSymbol(key);
   };
@@ -14,7 +16,7 @@ const SymbolDropdown = ({ symbolMap, symbol, setSymbol }) => {
 
       <Dropdown.Menu>
         <Dropdown.Item eventKey="">None</Dropdown.Item>
-        {Object.keys(symbolMap).map((symbol, index) => (
+        {feeTokens.map((symbol, index) => (
           <Dropdown.Item key={index} eventKey={symbol}>{symbol}</Dropdown.Item>
         ))}
       </Dropdown.Menu>

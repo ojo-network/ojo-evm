@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 import Ojo from './artifacts/contracts/Ojo.sol/Ojo.json';
 import MockOjo from './artifacts/contracts/MockOjoContract.sol/MockOjoContract.json';
-import IERC20 from './artifacts/@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol/IERC20.json'
+import IERC20 from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IERC20.sol/IERC20.json'
+import IAxelarGateway from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IAxelarGateway.sol/IAxelarGateway.json'
+import {
+  AxelarQueryAPI,
+  Environment,
+  GasToken,
+} from "@axelar-network/axelarjs-sdk";
 import AssetForm from './components/AssetForm';
 import SymbolDropdown from './components/SymbolDropdown';
 import PriceTable from './components/PriceTable';
@@ -16,25 +22,22 @@ function App() {
   const [priceData, setPriceData] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
 
-  const symbolMap = {
-    "aUSDC": "0x254d06f33bDc5b8ee05b2ea472107E300226659A"
-  };
-
   let signer = null;
   let provider;
   if (window.ethereum == null) {
-      alert("MetaMask not installed; using read-only defaults")
-      provider = ethers.getDefaultProvider()
+    alert("MetaMask not installed; using read-only defaults")
+    provider = ethers.getDefaultProvider()
   } else {
-      provider = new ethers.BrowserProvider(window.ethereum)
-      const setSigner = async () => {
-        signer = await provider.getSigner();
-      }
-      setSigner()
+    provider = new ethers.BrowserProvider(window.ethereum)
+    const setSigner = async () => {
+      signer = await provider.getSigner();
+    }
+    setSigner()
   }
 
   const mockOjoAddress = "0x85A7C7Ed7d7E34078b8b9134bf729BE49c01CE2F";
   const ojoAddress = "0xB76bE5180a3107B427D676C5FE53A9C52BCeaeda";
+  const axelarGatewayAddress = "0xe432150cce91c13a887f7D836923d5597adD8E31";
 
   useEffect(() => {
     const connectWallet = async () => {
@@ -50,22 +53,33 @@ function App() {
       setPriceData([]);
       return
     }
-    const tokenContract = new ethers.Contract(symbolMap[symbol], IERC20.abi, signer);
+    const axelarGatewayContract = new ethers.Contract(axelarGatewayAddress, IAxelarGateway.abi, signer)
+    const tokenAddress = await axelarGatewayContract.tokenAddresses(symbol)
+    const tokenContract = new ethers.Contract(tokenAddress, IERC20.abi, signer);
     const mockOjoContract = new ethers.Contract(mockOjoAddress, MockOjo.abi, signer);
+
+    const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
+    const gasFee = await api.estimateGasFee(
+      "ethereum-2",
+      "ojo",
+      GasToken.ETH,
+      700000,
+      2,
+    );
 
     if (typeof window.ethereum !== "undefined") {
       const assetNamesArray = assetNames.map(name => ethers.encodeBytes32String(name.trim()));
       try {
         // increase the allowance of MockOjo contract
-        const tx1 = await tokenContract.approve(mockOjoAddress, amount);
+        const tx1 = await tokenContract.approve(mockOjoAddress, ethers.parseUnits(amount, 6));
         await tx1.wait();
 
         const tx2 = await mockOjoContract.relayOjoPriceDataWithToken(
           assetNamesArray,
           symbol,
-          amount,
-          symbolMap[symbol],
-          { value: ethers.parseEther("0.01") }
+          ethers.parseUnits(amount, 6),
+          tokenAddress,
+          { value: gasFee }
         );
         await tx2.wait();
         alert('Ojo Price Data relay request sent successfully!');
@@ -116,7 +130,6 @@ function App() {
           setSelectAll={setSelectAll}
         />
         <SymbolDropdown
-          symbolMap={symbolMap}
           symbol={symbol}
           setSymbol={setSymbol}
         />

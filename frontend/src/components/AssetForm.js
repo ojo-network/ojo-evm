@@ -2,29 +2,29 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 
 const AssetForm = ({ assetNames, setAssetNames, selectAll, setSelectAll }) => {
-    const availableAssets = [
-        "ATOM","AXL","BNB","BTC","CMDX","CMST","CRV","DAI","DOT","ETH",
-        "INJ","IST","JUNO","KUJI","LINK","LUNA","MATIC","MKR","MNTA",
-        "OSMO","RETH","SCRT","SEI","STARS","STATOM","STJUNO","STOSMO",
-        "SUSHI","USDC","USDT","USK","WBTC","WETH","XRP"
-    ];
+  const availableAssets = [
+      "ATOM","AXL","BNB","BTC","CMDX","CMST","CRV","DAI","DOT","ETH",
+      "INJ","IST","JUNO","KUJI","LINK","LUNA","MATIC","MKR","MNTA",
+      "OSMO","RETH","SCRT","SEI","STARS","STATOM","STJUNO","STOSMO",
+      "SUSHI","USDC","USDT","USK","WBTC","WETH","XRP"
+  ];
 
-    const handleSelectAllChange = () => {
-        if (selectAll) {
-            setAssetNames([]);
-        } else {
-            setAssetNames(availableAssets);
-        }
-        setSelectAll(!selectAll);
-    };
+  const handleSelectAllChange = () => {
+    if (selectAll) {
+      setAssetNames([]);
+    } else {
+      setAssetNames(availableAssets);
+    }
+    setSelectAll(!selectAll);
+  };
 
-    const handleSwitchChange = (asset) => {
-        if (assetNames.includes(asset)) {
-            setAssetNames(assetNames.filter(a => a !== asset));
-        } else {
-            setAssetNames([...assetNames, asset]);
-        }
-    };
+  const handleSwitchChange = (asset) => {
+    if (assetNames.includes(asset)) {
+      setAssetNames(assetNames.filter(a => a !== asset));
+    } else {
+      setAssetNames([...assetNames, asset]);
+    }
+  };
 
   return (
     <Form>
