@@ -13,18 +13,18 @@ describe("Deploy", function () {
       const resolveWindow = 100;
 
       const Ojo = await ethers.getContractFactory("Ojo");
-      const ojo = await Ojo.deploy(axelarGateway.address, axelarGasReceiver.address, ojoChain, ojoAddress, resolveWindow);
+      const ojo = await Ojo.deploy(axelarGateway.address, axelarGasReceiver.address, ojoChain, ojoAddress, deployer, resolveWindow);
 
-      const MockOjoContract = await ethers.getContractFactory("MockOjoContract");
-      const mockOjoContract = await MockOjoContract.deploy(await ojo.getAddress())
+      const MockOjo = await ethers.getContractFactory("MockOjo");
+      const mockOjo = await MockOjo.deploy(await ojo.getAddress())
 
-      return {deployer, mockOjoContract, ojo}
+      return {deployer, mockOjo, ojo}
     }
 
 
     it("sets address of ojo contract correctly", async function(){
-        const { mockOjoContract, ojo} = await loadFixture(deployMockOjoContract);
+        const { mockOjo, ojo} = await loadFixture(deployMockOjoContract);
 
-        expect(await mockOjoContract.ojo()).eq(await ojo.getAddress())
+        expect(await mockOjo.ojo()).eq(await ojo.getAddress())
     })
 })
