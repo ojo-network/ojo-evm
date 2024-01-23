@@ -8,7 +8,7 @@ import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol"
 import "./IOjo.sol";
 import "./OjoTypes.sol";
 
-contract MockOjoContract {
+contract MockOjo {
     IOjo public immutable ojo;
 
     struct Balance {
@@ -65,7 +65,7 @@ contract MockOjoContract {
         ojo.callContractMethodWithOjoPriceData{value: msg.value}(
             assetNames,
             address(this),
-            MockOjoContract.setBalance.selector,
+            MockOjo.setBalance.selector,
             commandParams
         );
     }
@@ -85,7 +85,7 @@ contract MockOjoContract {
         ojo.callContractMethodWithOjoPriceDataAndToken{value: msg.value}(
             assetNames,
             address(this),
-            MockOjoContract.setBalance.selector,
+            MockOjo.setBalance.selector,
             commandParams,
             symbol,
             amount
