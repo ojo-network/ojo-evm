@@ -17,6 +17,7 @@ jobs:
           PATTERNS: |
             contracts/*
             test/*
+            .github/workflows/tests.yml
 
       - name: Install Node
         uses: actions/setup-node@v3
