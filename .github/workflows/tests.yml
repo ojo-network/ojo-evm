@@ -30,4 +30,4 @@ jobs:
       - name: Test Contracts
         if: env.GIT_DIFF
         run: |
-          make test-unit-contract
+          make test-unit

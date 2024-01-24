@@ -32,4 +32,4 @@ jobs:
       - name: Run solhint
         if: env.GIT_DIFF
         run: |
-          make lint-contract
+          make lint-contracts
