@@ -16,6 +16,7 @@ function get_networks(){
           accounts: [priv_key],
           url: chain.rpc
         }
+      }
     }
 
     networks["hardhat"]={
