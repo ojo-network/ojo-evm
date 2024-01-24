@@ -25,8 +25,9 @@ contract Ojo is IOjo, AxelarExecutable, Ownable {
         address gasReceiver_,
         string memory ojoChain_,
         string memory ojoAddress_,
+        address owner,
         uint256 resolveWindow_
-    ) AxelarExecutable(gateway_) Ownable(msg.sender) {
+    ) AxelarExecutable(gateway_) Ownable(owner) {
         gasReceiver = IAxelarGasService(gasReceiver_);
         ojoChain = ojoChain_;
         ojoAddress = ojoAddress_;

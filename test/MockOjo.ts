@@ -13,7 +13,7 @@ describe("Deploy", function () {
       const resolveWindow = 100;
 
       const Ojo = await ethers.getContractFactory("Ojo");
-      const ojo = await Ojo.deploy(axelarGateway.address, axelarGasReceiver.address, ojoChain, ojoAddress, resolveWindow);
+      const ojo = await Ojo.deploy(axelarGateway.address, axelarGasReceiver.address, ojoChain, ojoAddress, deployer, resolveWindow);
 
       const MockOjo = await ethers.getContractFactory("MockOjo");
       const mockOjo = await MockOjo.deploy(await ojo.getAddress())
