@@ -5,11 +5,11 @@ import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecu
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@axelar-network/axelar-gmp-sdk-solidity/contracts/upgradable/Upgradable.sol";
 import "./IOjo.sol";
 import "./OjoTypes.sol";
 
-contract Ojo is IOjo, AxelarExecutable, Ownable {
+contract Ojo is IOjo, AxelarExecutable, Upgradable {
     IAxelarGasService public immutable gasReceiver;
 
     string public ojoChain;
@@ -20,17 +20,10 @@ contract Ojo is IOjo, AxelarExecutable, Ownable {
 
     mapping(bytes32 => OjoTypes.PriceData) public priceData;
 
-    constructor(
-        address gateway_,
-        address gasReceiver_,
-        string memory ojoChain_,
-        string memory ojoAddress_,
-        uint256 resolveWindow_
-    ) AxelarExecutable(gateway_) Ownable(msg.sender) {
+    // error AlreadyInitialized();
+
+    constructor(address gateway_, address gasReceiver_) AxelarExecutable(gateway_) {
         gasReceiver = IAxelarGasService(gasReceiver_);
-        ojoChain = ojoChain_;
-        ojoAddress = ojoAddress_;
-        resolveWindow = resolveWindow_;
     }
 
     function callContractMethodWithOjoPriceData(
@@ -83,6 +76,16 @@ contract Ojo is IOjo, AxelarExecutable, Ownable {
         );
 
         gateway.callContractWithToken(ojoChain, ojoAddress, payloadWithVersion, symbol, amount);
+    }
+
+    function _setup(bytes calldata data) internal override {
+        (string memory ojoChain_, string memory ojoAddress_, uint256 resolveWindow_) = abi.decode(data, (string, string, uint256));
+        // if (bytes(ojoChain).length != 0) revert AlreadyInitialized();
+        // if (bytes(ojoAddress).length != 0) revert AlreadyInitialized();
+        // if (resolveWindow != 0) revert AlreadyInitialized();
+        ojoChain = ojoChain_;
+        ojoAddress = ojoAddress_;
+        resolveWindow = resolveWindow_;
     }
 
     function _execute(
@@ -191,5 +194,9 @@ contract Ojo is IOjo, AxelarExecutable, Ownable {
 
     function updateResolveWindow(uint256 resolveWindow_) external onlyOwner {
         resolveWindow = resolveWindow_;
+    }
+
+    function contractId() external pure returns (bytes32) {
+        return keccak256('ojo');
     }
 }

@@ -1,0 +1,121 @@
+[
+    {
+        "name": "Ethereum Goerli",
+        "chainId": 5,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "Ethereum Sepolia",
+        "chainId": 11155111,
+        "rpc": "https://1rpc.io/sepolia",
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "BNB Chain",
+        "chainId": 97,
+        "gateway": "0x4D147dCb984e6affEEC47e44293DA442580A3Ec0",
+        "rpc": "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+        "tokenSymbol": "tBNB"
+    },
+    {
+        "name": "Polygon Mumbai",
+        "chainId": 80001,
+        "gateway": "0xBF62ef1486468a6bd26Dd669C06db43dEd5B849B",
+        "rpc": "https://polygon-mumbai.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        "tokenSymbol": "MATIC"
+    },
+    {
+        "name": "Polygon zkEVM",
+        "chainId": 1442,
+        "gateway": "0x999117D44220F33e0441fbAb2A5aDB8FF485c54D",
+        "rpc": "https://rpc.public.zkevm-test.net",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "Avalanche Fuji C-Chain",
+        "chainId": 43113,
+        "rpc": "https://api.avax-test.network/ext/bc/C/rpc",
+        "gateway": "0xC249632c2D40b9001FE907806902f63038B737Ab",
+        "tokenSymbol": "AVAX"
+    },
+    {
+        "name": "Fantom",
+        "chainId": 4002,
+        "gateway": "0x97837985Ec0494E7b9C71f5D3f9250188477ae14",
+        "rpc": "https://rpc.testnet.fantom.network",
+        "tokenSymbol": "FTM"
+    },
+    {
+        "name": "Moonbase",
+        "chainId": 1287,
+        "rpc": "https://rpc.api.moonbase.moonbeam.network",
+        "gateway": "0x5769D84DD62a6fD969856c75c7D321b84d455929",
+        "tokenSymbol": "DEV"
+    },
+    {
+        "name": "Arbitrum Goerli",
+        "chainId": 421613,
+        "rpc": "https://arbitrum-goerli.publicnode.com",
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "tokenSymbol": "AGOR"
+    },
+    {
+        "name": "Arbitrum Sepolia",
+        "chainId": 421614,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://arbitrum-sepolia.blockpi.network/v1/rpc/public",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "Optimism Goerli",
+        "chainId": 420,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://optimism-goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "Base Goerli",
+        "chainId": 84531,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://goerli.base.org",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "Mantle",
+        "chainId": 5001,
+        "rpc": "https://rpc.testnet.mantle.xyz",
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "tokenSymbol": "MNT"
+    },
+    {
+        "name": "Alfajores",
+        "chainId": 44787,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://alfajores-forno.celo-testnet.org",
+        "tokenSymbol": "CELO"
+    },
+    {
+        "name": "Kava",
+        "chainId": 2221,
+        "rpc": "https://evm.testnet.kava.io",
+        "gateway": "0xC8D18F85cB0Cee5C95eC29c69DeaF6cea972349c",
+        "tokenSymbol": "KAVA"
+    },
+    {
+        "name": "Filecoin Calibration",
+        "chainId": 314159,
+        "gateway": "0x999117D44220F33e0441fbAb2A5aDB8FF485c54D",
+        "rpc": "https://rpc.ankr.com/filecoin_testnet",
+        "tokenSymbol": "FIL"
+    },
+    {
+        "name": "Linea Goerli",
+        "chainId": 59140,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://rpc.goerli.linea.build",
+        "tokenSymbol": "LineaETH"
+    }
+]
