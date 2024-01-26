@@ -20,7 +20,7 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
 
     mapping(bytes32 => OjoTypes.PriceData) public priceData;
 
-    // error AlreadyInitialized();
+    error AlreadyInitialized();
 
     constructor(address gateway_, address gasReceiver_) AxelarExecutable(gateway_) {
         gasReceiver = IAxelarGasService(gasReceiver_);
@@ -80,9 +80,9 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
 
     function _setup(bytes calldata data) internal override {
         (string memory ojoChain_, string memory ojoAddress_, uint256 resolveWindow_) = abi.decode(data, (string, string, uint256));
-        // if (bytes(ojoChain).length != 0) revert AlreadyInitialized();
-        // if (bytes(ojoAddress).length != 0) revert AlreadyInitialized();
-        // if (resolveWindow != 0) revert AlreadyInitialized();
+        if (bytes(ojoChain).length != 0) revert AlreadyInitialized();
+        if (bytes(ojoAddress).length != 0) revert AlreadyInitialized();
+        if (resolveWindow != 0) revert AlreadyInitialized();
         ojoChain = ojoChain_;
         ojoAddress = ojoAddress_;
         resolveWindow = resolveWindow_;
