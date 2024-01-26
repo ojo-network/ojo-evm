@@ -17,6 +17,7 @@ jobs:
           PATTERNS: |
             contracts/*
             test/*
+            .github/workflows/tests.yml
 
       - name: Install Node
         uses: actions/setup-node@v3
@@ -30,4 +31,4 @@ jobs:
       - name: Test Contracts
         if: env.GIT_DIFF
         run: |
-          make test-unit-contract
+          make test-unit

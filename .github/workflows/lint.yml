@@ -17,6 +17,7 @@ jobs:
           PATTERNS: |
             contracts/*
             test/*
+            .github/workflows/lint.yml
 
       - name: Install packages
         if: env.GIT_DIFF
@@ -32,4 +33,4 @@ jobs:
       - name: Run solhint
         if: env.GIT_DIFF
         run: |
-          make lint-contract
+          make lint-contracts
