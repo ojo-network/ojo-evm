@@ -1,4 +1,4 @@
-import { Wallet, AbiCoder, ethers } from "ethers";
+import { Wallet, ethers } from "ethers";
 import MockOjo from '../artifacts/contracts/MockOjo.sol/MockOjo.json';
 import Create3Deployer from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/deploy/Create3Deployer.sol/Create3Deployer.json';
 import testnet_chains from '../testnet_chains.json';
@@ -25,10 +25,9 @@ async function main() {
 
     const salt = ethers.zeroPadValue(ethers.toUtf8Bytes("MockOjo"), 32);
 
-    const coder = AbiCoder.defaultAbiCoder()
     const creationCode = ethers.solidityPacked(
         ["bytes", "bytes"],
-        [MockOjo.bytecode, coder.encode(["address"], [ojoContractddress])]
+        [MockOjo.bytecode, ethers.AbiCoder.defaultAbiCoder().encode(["address"], [ojoContractddress])]
     );
 
     // perform static call to log address of the contract

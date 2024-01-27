@@ -1,7 +1,7 @@
-import { Wallet, getDefaultProvider, ethers } from "ethers";
+import { Wallet, ethers } from "ethers";
 import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import testnet_chains from '../testnet_chains.json';
-const { upgradeUpgradable } = require('@axelar-network/axelar-gmp-sdk-solidity');
+const { upgradeUpgradable } = require('./utils');
 
 async function main() {
     const ojoProxyAddress = "0x4C49Bca23BB402e4938B59Af14f17FA8178c1BA3";
@@ -16,10 +16,10 @@ async function main() {
     const evmChains = testnet_chains.map((chain) => ({ ...chain }));
 
     for (const chain of evmChains) {
-        const provider = getDefaultProvider(chain.rpc)
+        const provider = new ethers.JsonRpcProvider(chain.rpc)
         const wallet = new Wallet(privateKey, provider);
         const balance = await provider.getBalance(wallet.address)
-        console.log(`${chain.name} wallet balance: ${ethers.utils.formatEther(balance.toString())} ${chain.tokenSymbol}`);
+        console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
         const upgradeTx = await upgradeUpgradable(
             ojoProxyAddress,

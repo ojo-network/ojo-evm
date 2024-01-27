@@ -1,8 +1,8 @@
-import { Wallet, getDefaultProvider, ethers } from "ethers";
+import { Wallet, ethers } from "ethers";
 import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import OjoProxy from '../artifacts/contracts/OjoProxy.sol/OjoProxy.json';
 import testnet_chains from '../testnet_chains.json';
-const { deployCreate2InitUpgradable } = require('@axelar-network/axelar-gmp-sdk-solidity');
+const { deployCreate2InitUpgradable } = require('./utils');
 
 async function main() {
   const axelarGasReceiverAddress = "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6";
@@ -20,10 +20,10 @@ async function main() {
   const evmChains = testnet_chains.map((chain) => ({ ...chain }));
 
   for (const chain of evmChains) {
-      const provider = getDefaultProvider(chain.rpc)
+      const provider = new ethers.JsonRpcProvider(chain.rpc)
       const wallet = new Wallet(privateKey, provider);
       const balance = await provider.getBalance(wallet.address)
-      console.log(`${chain.name} wallet balance: ${ethers.utils.formatEther(balance.toString())} ${chain.tokenSymbol}`);
+      console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
       const deployedContract = await deployCreate2InitUpgradable(
           create2DeployerAddress,
@@ -31,11 +31,10 @@ async function main() {
           Ojo,
           OjoProxy,
           [chain.gateway, axelarGasReceiverAddress],
-          [],
-          ethers.utils.defaultAbiCoder.encode(["string", "string", "uint256"],[ojoChain, ojoAddress, resolveWindow])
+          ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256"],[ojoChain, ojoAddress, resolveWindow])
       );
 
-      console.log(`${chain.name}, address: ${deployedContract.address}`);
+      console.log(`${chain.name}, address: ${await deployedContract.getAddress()}`);
   }
 }
 
