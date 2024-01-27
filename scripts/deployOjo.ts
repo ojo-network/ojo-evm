@@ -18,6 +18,7 @@ async function main() {
   }
 
   const evmChains = testnet_chains.map((chain) => ({ ...chain }));
+  const key = Date.now();
 
   for (const chain of evmChains) {
       const provider = new ethers.JsonRpcProvider(chain.rpc)
@@ -31,7 +32,8 @@ async function main() {
           Ojo,
           OjoProxy,
           [chain.gateway, axelarGasReceiverAddress],
-          ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256"],[ojoChain, ojoAddress, resolveWindow])
+          ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256"],[ojoChain, ojoAddress, resolveWindow]),
+          key
       );
 
       console.log(`${chain.name}, address: ${await deployedContract.getAddress()}`);
