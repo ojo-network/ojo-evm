@@ -79,7 +79,10 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
     }
 
     function _setup(bytes calldata data) internal override {
-        (string memory ojoChain_, string memory ojoAddress_, uint256 resolveWindow_) = abi.decode(data, (string, string, uint256));
+        (string memory ojoChain_, string memory ojoAddress_, uint256 resolveWindow_) = abi.decode(
+            data,
+            (string, string, uint256)
+        );
         if (bytes(ojoChain).length != 0) revert AlreadyInitialized();
         if (bytes(ojoAddress).length != 0) revert AlreadyInitialized();
         if (resolveWindow != 0) revert AlreadyInitialized();
