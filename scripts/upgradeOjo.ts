@@ -1,7 +1,7 @@
 import { Wallet, ethers } from "ethers";
 import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import testnet_chains from '../testnet_chains.json';
-const { upgradeUpgradable } = require('./utils');
+import { upgradeUpgradable } from './utils/upgradable';
 
 async function main() {
     const ojoProxyAddress = "0x4C49Bca23BB402e4938B59Af14f17FA8178c1BA3";

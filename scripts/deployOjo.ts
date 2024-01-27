@@ -2,7 +2,7 @@ import { Wallet, ethers } from "ethers";
 import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import OjoProxy from '../artifacts/contracts/OjoProxy.sol/OjoProxy.json';
 import testnet_chains from '../testnet_chains.json';
-const { deployCreate2InitUpgradable } = require('./utils');
+import { deployCreate2InitUpgradable } from './utils/upgradable';
 
 async function main() {
   const axelarGasReceiverAddress = "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6";

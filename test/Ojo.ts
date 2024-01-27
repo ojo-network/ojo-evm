@@ -1,7 +1,6 @@
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import {  } from "../scripts/utils";
 
 describe("Deploy OjoContract", function() {
 	async function deployOjoContract() {

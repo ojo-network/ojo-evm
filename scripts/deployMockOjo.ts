@@ -1,11 +1,11 @@
 import { Wallet, ethers } from "ethers";
 import MockOjo from '../artifacts/contracts/MockOjo.sol/MockOjo.json';
-import Create3Deployer from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/deploy/Create3Deployer.sol/Create3Deployer.json';
+import Create2Deployer from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/deploy/Create2Deployer.sol/Create2Deployer.json';
 import testnet_chains from '../testnet_chains.json';
 
 async function main() {
-  const ojoContractddress = "0x1cAe21620070E54C17279faDb2Bd6eBd5654459a";
-  const create3DeployerAddress = "0x6513Aedb4D1593BA12e50644401D976aebDc90d8";
+  const ojoContractddress = "0x4C49Bca23BB402e4938B59Af14f17FA8178c1BA3";
+  const create2DeployerAddress = "0x98b2920d53612483f91f12ed7754e51b4a77919e";
 
   const privateKey = process.env.PRIVATE_KEY;
 
@@ -21,7 +21,7 @@ async function main() {
     const balance = await provider.getBalance(wallet.address)
     console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-    const deployerContract = new ethers.Contract(create3DeployerAddress, Create3Deployer.abi, wallet);
+    const deployerContract = new ethers.Contract(create2DeployerAddress, Create2Deployer.abi, wallet);
 
     const salt = ethers.zeroPadValue(ethers.toUtf8Bytes("MockOjo"), 32);
 
