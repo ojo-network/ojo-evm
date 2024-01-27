@@ -200,6 +200,6 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
     }
 
     function contractId() external pure returns (bytes32) {
-        return keccak256('ojo');
+        return keccak256('ojo-v1');
     }
 }
