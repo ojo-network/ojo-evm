@@ -16,7 +16,7 @@ contract MockOjo {
         uint256 amount;
     }
 
-    Balance[] public balances ;
+    Balance[] public balances;
 
     constructor(address ojo_) {
         ojo = IOjo(ojo_);
