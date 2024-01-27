@@ -10,6 +10,6 @@ contract OjoProxy is InitProxy {
         override
         returns (bytes32)
     {
-        return keccak256('ojo');
+        return keccak256('ojo-v1');
     }
 }
