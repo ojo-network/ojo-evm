@@ -11,11 +11,13 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  margin-bottom: 24px;
 }
 
 .custom-buttons button {
   font-size: 24px;
   margin-bottom: 24px;
+  margin-top: 24px;
   color: white;
   background-color: #ff6056;
   padding: 12px;

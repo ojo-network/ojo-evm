@@ -1,7 +1,14 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
-const AssetForm = ({ assetNames, setAssetNames, selectAll, setSelectAll }) => {
+type AssetFormParameters = {
+    assetNames: string[];
+    setAssetNames: React.Dispatch<React.SetStateAction<string[]>>;
+    selectAll: boolean;
+    setSelectAll: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AssetForm: React.FC<AssetFormParameters> = ({ assetNames, setAssetNames, selectAll, setSelectAll }) => {
   const availableAssets = [
       "ATOM","AXL","BNB","BTC","CMDX","CMST","CRV","DAI","DOT","ETH",
       "INJ","IST","JUNO","KUJI","LINK","LUNA","MATIC","MKR","MNTA",
@@ -18,7 +25,7 @@ const AssetForm = ({ assetNames, setAssetNames, selectAll, setSelectAll }) => {
     setSelectAll(!selectAll);
   };
 
-  const handleSwitchChange = (asset) => {
+  const handleSwitchChange = (asset: string) => {
     if (assetNames.includes(asset)) {
       setAssetNames(assetNames.filter(a => a !== asset));
     } else {

@@ -1,8 +1,17 @@
-import React from 'react';
 import { Table } from 'react-bootstrap';
 import { ethers } from 'ethers';
 
-const PriceTable = ({ priceData }) => {
+type PriceData = {
+    assetName: string;
+    price: string;
+    resolveTime: number;
+}
+
+type PriceTableProps = {
+    priceData: PriceData[];
+}
+
+const PriceTable: React.FC<PriceTableProps> = ({ priceData }) => {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
