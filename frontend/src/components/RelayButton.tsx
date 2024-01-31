@@ -62,6 +62,7 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
                 { value: gasFee }
             );
             await tx2.wait();
+            alert("Relay tx sent succesfully, check status on https://testnet.axelarscan.io/gmp/search?chain=ojo")
         } else {
             alert("No wallet connected!")
         }
