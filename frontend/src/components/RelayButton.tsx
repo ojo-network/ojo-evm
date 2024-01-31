@@ -2,7 +2,7 @@ import React from 'react';
 import MockOjo from '../artifacts/contracts/MockOjoContract.sol/MockOjoContract.json';
 import IERC20 from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IERC20.sol/IERC20.json'
 import IAxelarGateway from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IAxelarGateway.sol/IAxelarGateway.json'
-import { axelarChains, isAxelarChain } from './AxelarChains'
+import { axelarChains, axelarGatewayAddresses, isAxelarChain } from './lib/AxelarChains'
 import {
   AxelarQueryAPI,
   Environment,
@@ -10,8 +10,7 @@ import {
 } from "@axelar-network/axelarjs-sdk";
 import { ethers } from 'ethers';
 import { useNetwork } from 'wagmi';
-const mockOjoAddress = "0x3b9A4915c01Ce2e5AD07FE1F6B18ee763a4BB841" as `0x${string}`;
-const axelarGatewayAddress = "0xe432150cce91c13a887f7D836923d5597adD8E31" as `0x${string}`;
+const mockOjoAddress = import.meta.env.VITE_MOCK_OJO_ADDRESS as `0x${string}`;
 
 type RelayPricesParameters = {
     assetNames: string[];
@@ -32,6 +31,7 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
             const signer = await provider.getSigner();
 
             // fetch token address of fee token
+            const axelarGatewayAddress = axelarGatewayAddresses[chain.name];
             const axelarGatewayContract = new ethers.Contract(axelarGatewayAddress, IAxelarGateway.abi, signer);
             const tokenAddress = await axelarGatewayContract.tokenAddresses(symbol);
 

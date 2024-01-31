@@ -1,7 +1,7 @@
 import React from 'react';
 import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import { ethers } from 'ethers';
-const ojoAddress = "0x885C97650b85865A7b162179876585d1A8573D3E" as `0x${string}`;
+const ojoAddress = import.meta.env.VITE_OJO_ADDRESS as `0x${string}`;
 
 type DisplayPricesParameters = {
     assetNames: string[];
