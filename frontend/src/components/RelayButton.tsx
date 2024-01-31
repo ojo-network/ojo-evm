@@ -23,6 +23,7 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
 
     const relayPrices = async () => {
         if (assetNames.length === 0 || !symbol || !amount) {
+            alert("Must select assets, fee token, and amount to relay price data")
             return
         }
 
@@ -61,6 +62,8 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
                 { value: gasFee }
             );
             await tx2.wait();
+        } else {
+            alert("No wallet connected!")
         }
     }
 

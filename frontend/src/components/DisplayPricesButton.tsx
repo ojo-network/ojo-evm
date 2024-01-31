@@ -26,9 +26,10 @@ const DisplayPricesButton: React.FC<DisplayPricesParameters> = ({ assetNames, se
                 setPriceData(priceData);
             } catch (error) {
                 console.error('Failed to fetch price data:', error);
-                alert('No price data available for the specified assets.');
                 setPriceData([]);
             }
+        } else {
+            alert("No wallet connected!")
         }
     };
 

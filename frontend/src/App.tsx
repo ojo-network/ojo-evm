@@ -7,7 +7,6 @@ import RelayButton from './components/RelayButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
 
 function App () {
   const [assetNames, setAssetNames] = useState([] as string[]);
@@ -15,8 +14,6 @@ function App () {
   const [amount, setAmount] = useState('');
   const [priceData, setPriceData] = useState([] as any[]);
   const [selectAll, setSelectAll] = useState(false);
-
-  const { isConnected } = useAccount();
 
   return (
     <div className="App">
