@@ -9,7 +9,8 @@ async function main() {
   const create2DeployerAddress = "0x98b2920d53612483f91f12ed7754e51b4a77919e";
   const ojoChain = "ojo";
   const ojoAddress = "ojo1es9mhmnunh208ucwq8rlrl97hqulxrz8k37dcu";
-  const resolveWindow = 7200
+  const resolveWindow = 7200;
+  const assetLimit = 5;
 
   const privateKey = process.env.PRIVATE_KEY;
 
@@ -32,7 +33,7 @@ async function main() {
           Ojo,
           OjoProxy,
           [chain.gateway, axelarGasReceiverAddress],
-          ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256"],[ojoChain, ojoAddress, resolveWindow]),
+          ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256", "uint16"],[ojoChain, ojoAddress, resolveWindow, assetLimit]),
           key
       );
 
