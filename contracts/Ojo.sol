@@ -32,6 +32,8 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
         bytes4 commandSelector,
         bytes calldata commandParams
     ) external payable {
+        require(assetNames.length <= 5, "Cannot relay more than 5 assets at a time");
+
         bytes memory payloadWithVersion = abi.encodePacked(
             bytes4(uint32(0)), // version number
             abi.encode(assetNames, contractAddress, commandSelector, commandParams, block.timestamp) // payload
@@ -56,6 +58,8 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
         string memory symbol,
         uint256 amount
     ) external payable {
+        require(assetNames.length <= 5, "Cannot relay more than 5 assets at a time");
+        
         address tokenAddress = gateway.tokenAddresses(symbol);
         IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
         IERC20(tokenAddress).approve(address(gateway), amount);

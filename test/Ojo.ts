@@ -43,13 +43,38 @@ describe("Deploy OjoContract", function() {
         expect(await ojo.resolveWindow()).eq(150);
 
         // other account cannot update ojoChain, ojoAddress, and resolveWindow
-        expect(ojo.connect(otherAccount).updateOjoChain("ojoChain3")).to.be.revertedWithCustomError;
+        await expect(ojo.connect(otherAccount).updateOjoChain("ojoChain3")).to.be.revertedWithCustomError(ojo, "NotOwner");
         expect(await ojo.ojoChain()).eq("ojoChain2");
 
-        expect(ojo.connect(otherAccount).updateOjoAddress("ojoAddress3")).to.be.revertedWithCustomError;
+        await expect(ojo.connect(otherAccount).updateOjoAddress("ojoAddress3")).to.be.revertedWithCustomError(ojo, "NotOwner");
         expect(await ojo.ojoAddress()).eq("ojoAddress2");
 
-        expect(ojo.connect(otherAccount).updateResolveWindow(200)).to.be.revertedWithCustomError;
+        await expect(ojo.connect(otherAccount).updateResolveWindow(200)).to.be.revertedWithCustomError(ojo, "NotOwner");
         expect(await ojo.resolveWindow()).eq(150);
+    })
+
+    it("reverts when trying to relay more than 5 assets at once", async function() {
+        const {deployer, ojo} = await loadFixture(deployOjoContract);
+
+        const assets = ["ATOM", "BTC", "ETH", "BNB", "USDC", "MATIC"];
+        const assetNames = assets.map(name => ethers.encodeBytes32String(name));
+
+        await expect(ojo.connect(deployer).callContractMethodWithOjoPriceData(
+            assetNames,
+            ethers.ZeroAddress,
+            '0x00000000',
+            '0x',
+            {value: ethers.parseEther("0")}
+            )).to.be.revertedWith("Cannot relay more than 5 assets at a time");
+
+        await expect(ojo.connect(deployer).callContractMethodWithOjoPriceDataAndToken(
+            assetNames,
+            ethers.ZeroAddress,
+            '0x00000000',
+            '0x',
+            '',
+            0,
+            {value: ethers.parseEther("0")}
+            )).to.be.revertedWith("Cannot relay more than 5 assets at a time");
     })
 })
