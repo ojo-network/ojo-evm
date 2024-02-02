@@ -1,10 +1,15 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 
-const SymbolDropdown = ({ symbol, setSymbol }) => {
+type AssetFormParameters = {
+    symbol: string;
+    setSymbol: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const SymbolDropdown: React.FC<AssetFormParameters> = ({ symbol, setSymbol }) => {
   const feeTokens = ["aUSDC"];
 
-  const handleSelectSymbol = (key) => {
+  const handleSelectSymbol = (key: any) => {
     setSymbol(key);
   };
 
