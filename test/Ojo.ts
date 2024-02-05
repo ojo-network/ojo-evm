@@ -13,7 +13,8 @@ describe("Deploy OjoContract", function() {
 		const ojoChain = "ojoChain";
 		const ojoAddress = "ojoAddress";
 		const resolveWindow = 100;
-		const initParams = ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256"],[ojoChain, ojoAddress, resolveWindow]);
+        const assetLimit = 5;
+		const initParams = ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256", "uint16"],[ojoChain, ojoAddress, resolveWindow, assetLimit]);
 
 		const OjoProxy = await ethers.getContractFactory("OjoProxy");
 		const ojoProxy = await OjoProxy.deploy();
@@ -42,14 +43,45 @@ describe("Deploy OjoContract", function() {
         await ojo.connect(deployer).updateResolveWindow(150);
         expect(await ojo.resolveWindow()).eq(150);
 
-        // other account cannot update ojoChain, ojoAddress, and resolveWindow
-        expect(ojo.connect(otherAccount).updateOjoChain("ojoChain3")).to.be.revertedWithCustomError;
+        await ojo.connect(deployer).updateAssetLimit(10);
+        expect(await ojo.assetLimit()).eq(10);
+
+        // other account cannot update ojoChain, ojoAddress, resolveWindow, and assetLimit
+        await expect(ojo.connect(otherAccount).updateOjoChain("ojoChain3")).to.be.revertedWithCustomError(ojo, "NotOwner");
         expect(await ojo.ojoChain()).eq("ojoChain2");
 
-        expect(ojo.connect(otherAccount).updateOjoAddress("ojoAddress3")).to.be.revertedWithCustomError;
+        await expect(ojo.connect(otherAccount).updateOjoAddress("ojoAddress3")).to.be.revertedWithCustomError(ojo, "NotOwner");
         expect(await ojo.ojoAddress()).eq("ojoAddress2");
 
-        expect(ojo.connect(otherAccount).updateResolveWindow(200)).to.be.revertedWithCustomError;
+        await expect(ojo.connect(otherAccount).updateResolveWindow(200)).to.be.revertedWithCustomError(ojo, "NotOwner");
         expect(await ojo.resolveWindow()).eq(150);
+
+        await expect(ojo.connect(otherAccount).updateAssetLimit(20)).to.be.revertedWithCustomError(ojo, "NotOwner");
+        expect(await ojo.assetLimit()).eq(10);
+    })
+
+    it("reverts when trying to relay more than 5 assets at once", async function() {
+        const {deployer, ojo} = await loadFixture(deployOjoContract);
+
+        const assets = ["ATOM", "BTC", "ETH", "BNB", "USDC", "MATIC"];
+        const assetNames = assets.map(name => ethers.encodeBytes32String(name));
+
+        await expect(ojo.connect(deployer).callContractMethodWithOjoPriceData(
+            assetNames,
+            ethers.ZeroAddress,
+            '0x00000000',
+            '0x',
+            {value: ethers.parseEther("0")}
+            )).to.be.revertedWith("Number of assets requested is over limit");
+
+        await expect(ojo.connect(deployer).callContractMethodWithOjoPriceDataAndToken(
+            assetNames,
+            ethers.ZeroAddress,
+            '0x00000000',
+            '0x',
+            '',
+            0,
+            {value: ethers.parseEther("0")}
+            )).to.be.revertedWith("Number of assets requested is over limit");
     })
 })

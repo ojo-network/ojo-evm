@@ -18,6 +18,8 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
 
     uint256 public resolveWindow;
 
+    uint16 public assetLimit;
+
     mapping(bytes32 => OjoTypes.PriceData) public priceData;
 
     error AlreadyInitialized();
@@ -32,6 +34,8 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
         bytes4 commandSelector,
         bytes calldata commandParams
     ) external payable {
+        require(assetNames.length <= assetLimit, "Number of assets requested is over limit");
+
         bytes memory payloadWithVersion = abi.encodePacked(
             bytes4(uint32(0)), // version number
             abi.encode(assetNames, contractAddress, commandSelector, commandParams, block.timestamp) // payload
@@ -56,6 +60,8 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
         string memory symbol,
         uint256 amount
     ) external payable {
+        require(assetNames.length <= assetLimit, "Number of assets requested is over limit");
+
         address tokenAddress = gateway.tokenAddresses(symbol);
         IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
         IERC20(tokenAddress).approve(address(gateway), amount);
@@ -79,16 +85,18 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
     }
 
     function _setup(bytes calldata data) internal override {
-        (string memory ojoChain_, string memory ojoAddress_, uint256 resolveWindow_) = abi.decode(
+        (string memory ojoChain_, string memory ojoAddress_, uint256 resolveWindow_, uint16 assetLimit_) = abi.decode(
             data,
-            (string, string, uint256)
+            (string, string, uint256, uint16)
         );
         if (bytes(ojoChain).length != 0) revert AlreadyInitialized();
         if (bytes(ojoAddress).length != 0) revert AlreadyInitialized();
         if (resolveWindow != 0) revert AlreadyInitialized();
+        if (assetLimit != 0) revert AlreadyInitialized();
         ojoChain = ojoChain_;
         ojoAddress = ojoAddress_;
         resolveWindow = resolveWindow_;
+        assetLimit = assetLimit_;
     }
 
     function _execute(
@@ -197,6 +205,10 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
 
     function updateResolveWindow(uint256 resolveWindow_) external onlyOwner {
         resolveWindow = resolveWindow_;
+    }
+
+    function updateAssetLimit(uint8 assetLimit_) external onlyOwner {
+        assetLimit = assetLimit_;
     }
 
     function contractId() external pure returns (bytes32) {
