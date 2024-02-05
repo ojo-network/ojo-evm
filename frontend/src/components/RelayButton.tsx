@@ -1,5 +1,6 @@
 import React from 'react';
-import MockOjo from '../artifacts/contracts/MockOjoContract.sol/MockOjoContract.json';
+import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
+import MockOjo from '../artifacts/contracts/MockOjo.sol/MockOjo.json';
 import IERC20 from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IERC20.sol/IERC20.json'
 import IAxelarGateway from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IAxelarGateway.sol/IAxelarGateway.json'
 import { axelarChains, axelarGatewayAddresses, isAxelarChain } from './lib/AxelarChains'
@@ -10,6 +11,7 @@ import {
 } from "@axelar-network/axelarjs-sdk";
 import { ethers } from 'ethers';
 import { useNetwork } from 'wagmi';
+const ojoAddress = import.meta.env.VITE_OJO_ADDRESS as `0x${string}`;
 const mockOjoAddress = import.meta.env.VITE_MOCK_OJO_ADDRESS as `0x${string}`;
 
 type RelayPricesParameters = {
@@ -23,13 +25,21 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
 
     const relayPrices = async () => {
         if (assetNames.length === 0 || !symbol || !amount) {
-            alert("Must select assets, fee token, and amount to relay price data")
+            alert("Must select assets, fee token, and amount to relay price data");
             return
         }
 
         if (typeof window.ethereum !== "undefined" && chain && isAxelarChain(chain.name)) {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
+
+            // check amount of assets requested to be relayed is not over limit
+            const ojoContract = new ethers.Contract(ojoAddress, Ojo.abi, signer);
+            const assetLimit = await ojoContract.assetLimit();
+            if (assetNames.length > assetLimit) {
+                alert("Cannot relay more than " + assetLimit + " assets at one time")
+                return
+            }
 
             // fetch token address of fee token
             const axelarGatewayAddress = axelarGatewayAddresses[chain.name];
