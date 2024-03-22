@@ -1,3 +1,5 @@
+![Logo!](assets/ojo.png)
+
 Ojo-evm is a set of contracts which use Axelar's GMP to request data from the Ojo blockchain and relay it back to the EVM. It is the simplest way to implement pull-style price feeds for any protocol on EVM.
 
 ## Table of Contents
