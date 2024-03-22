@@ -20,7 +20,7 @@ Ojo-evm is a set of contracts which use Axelar's GMP to request data from the Oj
 Ojo-evm is a pull-style oracle which executes DeFi transactions after oracle updates are successful. If they do not succeed or time out, the DeFi transaction will not go through. This design was created to stop tx-spam attacks on EVM, and to minimize the delta between DeFi transactions and oracle updates.
 
 1. User executes a DeFi transaction
-2. The Defi contract requests an Ojo update. During this request, the DeFi contract sends along the parameters and function to call after the oracle update goes through.
+2. The DeFi contract requests an Ojo update. During this request, the DeFi contract sends along the parameters and function to call after the oracle update goes through.
 3. The oracle update goes through Axelar's GMP
 4. Axelar's GMP relays the message over IBC to the Ojo blockchain
 5. The ojo blockchain reaches into the KV store to read the current price data
