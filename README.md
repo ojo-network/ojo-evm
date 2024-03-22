@@ -1,13 +1,11 @@
-# Sample Hardhat Project
+# Ojo EVM Contracts
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This repo contains the EVM contracts that are necessary to use Ojo price feeds on Axelar-connected EVMs.
 
-Try running some of the following tasks:
+# Flow
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+# Usage
+
+# Deployments
+
+These contracts are deployed everywhere listed [in our docs](https://docs.ojo.network/integrate/evm). Note: do not trust other addresses as they are not maintained by Ojo.
