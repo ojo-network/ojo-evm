@@ -1,11 +1,12 @@
 import { Wallet, ethers } from "ethers";
 import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import testnet_chains from '../testnet_chains.json';
+import mainnet_chains from '../mainnet_chains.json';
 import { upgradeUpgradable } from './utils/upgradable';
 
 async function main() {
-    const ojoProxyAddress = "0x4C49Bca23BB402e4938B59Af14f17FA8178c1BA3";
-    const axelarGasReceiverAddress = "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6";
+    const ojoProxyAddress = process.env.OJO_CONTRACT_ADDRESS;
+    const axelarGasReceiverAddress = process.env.AXELAR_GAS_RECEIVER_ADDRESS;
 
     const privateKey = process.env.PRIVATE_KEY;
 
@@ -13,7 +14,11 @@ async function main() {
         throw new Error('Invalid private key. Make sure the PRIVATE_KEY environment variable is set.');
     }
 
-    const evmChains = testnet_chains.map((chain) => ({ ...chain }));
+    const mainnet = Boolean(process.env.MAINNET)
+    let evmChains = testnet_chains.map((chain) => ({ ...chain }));
+    if (mainnet === true) {
+        evmChains = mainnet_chains.map((chain) => ({ ...chain }));
+    }
 
     for (const chain of evmChains) {
         const provider = new ethers.JsonRpcProvider(chain.rpc)
