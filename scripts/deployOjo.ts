@@ -2,15 +2,16 @@ import { Wallet, ethers } from "ethers";
 import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import OjoProxy from '../artifacts/contracts/OjoProxy.sol/OjoProxy.json';
 import testnet_chains from '../testnet_chains.json';
+import mainnet_chains from '../mainnet_chains.json';
 import { deployCreate2InitUpgradable } from './utils/upgradable';
 
 async function main() {
-  const axelarGasReceiverAddress = "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6";
-  const create2DeployerAddress = "0x98b2920d53612483f91f12ed7754e51b4a77919e";
-  const ojoChain = "ojo";
-  const ojoAddress = "ojo1es9mhmnunh208ucwq8rlrl97hqulxrz8k37dcu";
-  const resolveWindow = 7200;
-  const assetLimit = 5;
+  const axelarGasReceiverAddress = process.env.AXELAR_GAS_RECEIVER_ADDRESS;
+  const create2DeployerAddress = process.env.CREATE2_DEPLOYER_ADDRESS;
+  const ojoChain = process.env.OJO_CHAIN;
+  const ojoAddress = process.env.OJO_ADDRESS;
+  const resolveWindow = Number(process.env.RESOLVE_WINDOW);
+  const assetLimit = Number(process.env.ASSET_LIMIT);
 
   const privateKey = process.env.PRIVATE_KEY;
 
@@ -18,8 +19,13 @@ async function main() {
       throw new Error('Invalid private key. Make sure the PRIVATE_KEY environment variable is set.');
   }
 
-  const evmChains = testnet_chains.map((chain) => ({ ...chain }));
-  const key = Date.now();
+  const mainnet = Boolean(process.env.MAINNET)
+  let evmChains = testnet_chains.map((chain) => ({ ...chain }));
+  if (mainnet === true) {
+      evmChains = mainnet_chains.map((chain) => ({ ...chain }));
+  }
+
+  const key = Number(process.env.PRIVATE_KEY);
 
   for (const chain of evmChains) {
       const provider = new ethers.JsonRpcProvider(chain.rpc)

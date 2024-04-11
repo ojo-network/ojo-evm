@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Abritrum",
+        "chainId": 42161,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://arbitrum-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "Optimism",
+        "chainId": 10,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://optimism-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "Base",
+        "chainId": 8453,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://developer-access-mainnet.base.org",
+        "tokenSymbol": "ETH"
+    }
+]
