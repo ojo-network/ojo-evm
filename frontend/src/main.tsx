@@ -25,14 +25,19 @@ import {
   celoAlfajores,
   kavaTestnet,
   filecoinCalibration,
-  lineaTestnet
+  lineaTestnet,
+  mainnet,
+  arbitrum,
+  base,
+  optimism,
 } from 'wagmi/chains';
 
 const { chains, publicClient } = configureChains(
   [goerli, sepolia, bscTestnet, polygonMumbai, polygonZkEvmTestnet,
     avalancheFuji, fantomTestnet, moonbaseAlpha, arbitrumGoerli,
     arbitrumSepolia, optimismGoerli, baseGoerli, mantleTestnet,
-    celoAlfajores, kavaTestnet, filecoinCalibration, lineaTestnet],
+    celoAlfajores, kavaTestnet, filecoinCalibration, lineaTestnet,
+    mainnet, arbitrum, base, optimism],
   [publicProvider()]
 );
 

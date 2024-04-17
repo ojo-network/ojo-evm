@@ -16,7 +16,11 @@ export const axelarChains = {
     "Alfajores": "celo",
     "Kava EVM Testnet": "kava",
     "Filecoin Calibration": "filecoin-2",
-    "Linea Goerli Testnet": "linea"
+    "Linea Goerli Testnet": "linea",
+    "Ethereum": "mainnet",
+    "Arbitrum One": "arbitrum",
+    "Base": "base",
+    "OP Mainnet": "optimism"
 };
 
 export const axelarGatewayAddresses = {
@@ -36,7 +40,11 @@ export const axelarGatewayAddresses = {
     "Alfajores": "0xe432150cce91c13a887f7D836923d5597adD8E31",
     "Kava EVM Testnet": "0xC8D18F85cB0Cee5C95eC29c69DeaF6cea972349c",
     "Filecoin Calibration": "0x999117D44220F33e0441fbAb2A5aDB8FF485c54D",
-    "Linea Goerli Testnet": "0xe432150cce91c13a887f7D836923d5597adD8E31"
+    "Linea Goerli Testnet": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+    "Ethereum": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+    "Arbitrum One": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+    "Base": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+    "OP Mainnet": "0xe432150cce91c13a887f7D836923d5597adD8E31"
 }
 
 export function isAxelarChain(key: any): key is keyof typeof axelarChains {
