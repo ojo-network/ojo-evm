@@ -13,6 +13,7 @@ import { ethers } from 'ethers';
 import { useNetwork } from 'wagmi';
 const ojoAddress = import.meta.env.VITE_OJO_ADDRESS as `0x${string}`;
 const mockOjoAddress = import.meta.env.VITE_MOCK_OJO_ADDRESS as `0x${string}`;
+const environment = import.meta.env.VITE_ENVIRONMENT as Environment;
 
 type RelayPricesParameters = {
     assetNames: string[];
@@ -50,7 +51,8 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
             }
 
             // estimate axelar gmp fee
-            const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
+
+            const api = new AxelarQueryAPI({ environment: environment });
             const gasFee = await api.estimateGasFee(
                 axelarChains[chain?.name],
                 "ojo",

@@ -6,7 +6,7 @@ import App from './App.tsx'
 import './index.css'
 
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { configureChains, createConfig, WagmiConfig, Chain } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import {
   goerli,
@@ -31,13 +31,21 @@ import {
   base,
   optimism,
 } from 'wagmi/chains';
+const environment = import.meta.env.VITE_ENVIRONMENT as string;
+
+function getChains(): Chain[] {
+  if (environment == "mainnet") {
+    return [mainnet, arbitrum, base, optimism]
+  } else {
+    return [goerli, sepolia, bscTestnet, polygonMumbai, polygonZkEvmTestnet,
+      avalancheFuji, fantomTestnet, moonbaseAlpha, arbitrumGoerli,
+      arbitrumSepolia, optimismGoerli, baseGoerli, mantleTestnet,
+      celoAlfajores, kavaTestnet, filecoinCalibration, lineaTestnet]
+  }
+}
 
 const { chains, publicClient } = configureChains(
-  [goerli, sepolia, bscTestnet, polygonMumbai, polygonZkEvmTestnet,
-    avalancheFuji, fantomTestnet, moonbaseAlpha, arbitrumGoerli,
-    arbitrumSepolia, optimismGoerli, baseGoerli, mantleTestnet,
-    celoAlfajores, kavaTestnet, filecoinCalibration, lineaTestnet,
-    mainnet, arbitrum, base, optimism],
+  getChains(),
   [publicProvider()]
 );
 
