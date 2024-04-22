@@ -13,6 +13,7 @@ import { ethers } from 'ethers';
 import { useNetwork } from 'wagmi';
 const ojoAddress = import.meta.env.VITE_OJO_ADDRESS as `0x${string}`;
 const mockOjoAddress = import.meta.env.VITE_MOCK_OJO_ADDRESS as `0x${string}`;
+const environment = import.meta.env.VITE_ENVIRONMENT as Environment;
 
 type RelayPricesParameters = {
     assetNames: string[];
@@ -24,8 +25,8 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
     const { chain } = useNetwork();
 
     const relayPrices = async () => {
-        if (assetNames.length === 0 || !symbol || !amount) {
-            alert("Must select assets, fee token, and amount to relay price data");
+        if (assetNames.length === 0) {
+            alert("Must select assets to relay price data");
             return
         }
 
@@ -41,13 +42,17 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
                 return
             }
 
-            // fetch token address of fee token
-            const axelarGatewayAddress = axelarGatewayAddresses[chain.name];
-            const axelarGatewayContract = new ethers.Contract(axelarGatewayAddress, IAxelarGateway.abi, signer);
-            const tokenAddress = await axelarGatewayContract.tokenAddresses(symbol);
+            // fetch token address of fee token if selected
+            let tokenAddress;
+            if (symbol) {
+                const axelarGatewayAddress = axelarGatewayAddresses[chain.name];
+                const axelarGatewayContract = new ethers.Contract(axelarGatewayAddress, IAxelarGateway.abi, signer);
+                tokenAddress = await axelarGatewayContract.tokenAddresses(symbol);
+            }
 
             // estimate axelar gmp fee
-            const api = new AxelarQueryAPI({ environment: Environment.TESTNET });
+
+            const api = new AxelarQueryAPI({ environment: environment });
             const gasFee = await api.estimateGasFee(
                 axelarChains[chain?.name],
                 "ojo",
@@ -56,21 +61,31 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
                 2,
             );
 
-            // approve MockOjo Contract to spend fee token
-            const tokenContract = new ethers.Contract(tokenAddress, IERC20.abi, signer);
-            const tx1 = await tokenContract.approve(mockOjoAddress, ethers.parseUnits(amount, 6));
-            await tx1.wait();
+            // approve MockOjo Contract to spend fee token if selected
+            if (symbol) {
+                const tokenContract = new ethers.Contract(tokenAddress, IERC20.abi, signer);
+                const tx1 = await tokenContract.approve(mockOjoAddress, ethers.parseUnits(amount, 6));
+                await tx1.wait();
+            }
 
             // send relay price data tx
             const assetNamesArray = assetNames.map(name => ethers.encodeBytes32String(name));
             const mockOjoContract = new ethers.Contract(mockOjoAddress, MockOjo.abi, signer);
-            const tx2 = await mockOjoContract.relayOjoPriceDataWithToken(
-                assetNamesArray,
-                symbol,
-                ethers.parseUnits(amount, 6),
-                tokenAddress,
-                { value: gasFee }
-            );
+            let tx2;
+            if (symbol) {
+                tx2 = await mockOjoContract.relayOjoPriceDataWithToken(
+                    assetNamesArray,
+                    symbol,
+                    ethers.parseUnits(amount, 6),
+                    tokenAddress,
+                    { value: gasFee }
+                );
+            } else {
+                tx2 = await mockOjoContract.relayOjoPriceData(
+                    assetNamesArray,
+                    { value: gasFee }
+                )
+            }
             await tx2.wait();
             alert("Relay tx sent succesfully, check status on https://testnet.axelarscan.io/gmp/search?chain=ojo")
         } else {
