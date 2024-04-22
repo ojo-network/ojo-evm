@@ -4,8 +4,8 @@ import Create2Deployer from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/c
 import testnet_chains from '../testnet_chains.json';
 
 async function main() {
-  const ojoContractddress = "0x885C97650b85865A7b162179876585d1A8573D3E";
-  const create2DeployerAddress = "0x98b2920d53612483f91f12ed7754e51b4a77919e";
+  const ojoContractddress = process.env.OJO_CONTRACT_ADDRESS;
+  const create2DeployerAddress = process.env.CREATE2_DEPLOYER_ADDRESS as string;
 
   const privateKey = process.env.PRIVATE_KEY;
 
