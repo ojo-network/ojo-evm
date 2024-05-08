@@ -91,31 +91,64 @@ func (r *Relayer) tick(ctx context.Context) error {
 		latestAssets := make([]asset, len(r.cfg.Assets))
 		for k, v := range r.cfg.Assets {
 			// Get price
+			price, err := r.relayerClient.GetPrice(ctx, v.Denom)
+			if err != nil {
+				r.logger.Err(err).Msg("unable to communicate with ojo node")
+				return err
+			}
+			priceFl, err := price.Amount.Float64()
+			if err != nil {
+				r.logger.Err(err).Msg("unable to convert price to float64")
+				return err
+			}
 
 			// Set latest update in memory
 			latestAssets[k] = asset{
-				lastPrice: 0,
+				lastPrice: priceFl,
 				lastRelay: time.Now(),
 				denom:     v.Denom,
 			}
+
+			// Relay price
+			if err := r.relay(v.Denom); err != nil {
+				r.logger.Err(err).Msg("unable to relay price")
+				return err
+			}
 		}
+
+		// Set to memory
+		r.latestAssets = latestAssets
 		return nil
 	}
 
-	// if not, check for heartbeats
+	// if not, check for heartbeats and deviations
 	for _, v := range r.latestAssets {
 		// if heartbeat needs to be sent, relay
 		if heartbeat(r.cfg.Relayer.Interval, v.lastRelay) {
-			return r.relay(v.denom)
+			err := r.relay(v.denom)
+			if err != nil {
+				return err
+			}
+
+			// update memory
+			v.lastRelay = time.Now()
+			v.lastPrice, err = r.getPrice(ctx, v.denom)
+			if err != nil {
+				r.logger.Err(err).Msg("unable to communicate with ojo node")
+				return err
+			}
 		}
 
 		// if price has deviated, send a relay
-		price, err := r.relayerClient.GetPrice(ctx, v.denom)
+		price, err := r.getPrice(ctx, v.denom)
 		if err != nil {
 			r.logger.Err(err).Msg("unable to communicate with ojo node")
 			return err
 		}
 		if deviated(price, r.cfg.Relayer.Deviation, v.lastPrice) {
+			v.lastRelay = time.Now()
+			v.lastPrice = price
+
 			return r.relay(v.denom)
 		}
 	}
@@ -129,12 +162,8 @@ func heartbeat(interval time.Duration, lastUpdate time.Time) bool {
 }
 
 // deviated checks if the price has deviated from the last price by the deviation %.
-func deviated(price sdk.DecCoin, deviation float64, lastPrice float64) bool {
-	fl, err := price.Amount.Float64()
-	if err != nil {
-		return true
-	}
-	return fl > lastPrice*(1+deviation) || fl < lastPrice*(1-deviation)
+func deviated(price float64, deviation float64, lastPrice float64) bool {
+	return price > lastPrice*(1+deviation) || price < lastPrice*(1-deviation)
 }
 
 func (r Relayer) relay(denom string) error {
@@ -166,4 +195,14 @@ func (r Relayer) relay(denom string) error {
 	}
 
 	return r.relayerClient.BroadcastTx(currentHeight, broadcastTimeout, msg)
+}
+
+// getPrice is a util function to get the price of a given denom as a float64.
+func (r Relayer) getPrice(ctx context.Context, denom string) (float64, error) {
+	price, err := r.relayerClient.GetPrice(ctx, denom)
+	if err != nil {
+		return 0, err
+	}
+
+	return price.Amount.Float64()
 }
