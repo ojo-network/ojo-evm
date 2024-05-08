@@ -6,7 +6,7 @@ chain_id = "ojo-testnet"
 
 [keyring]
 backend = "test"
-dir = "/Users/adamwozniak/.ojo"
+dir = "/Users/username/.ojo"
 
 [rpc]
 grpc_endpoint = "localhost:9090"
