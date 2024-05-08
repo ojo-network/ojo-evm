@@ -137,6 +137,7 @@ func (r *Relayer) tick(ctx context.Context) error {
 				r.logger.Err(err).Msg("unable to communicate with ojo node")
 				return err
 			}
+			return nil
 		}
 
 		// if price has deviated, send a relay
@@ -146,10 +147,15 @@ func (r *Relayer) tick(ctx context.Context) error {
 			return err
 		}
 		if deviated(price, r.cfg.Relayer.Deviation, v.lastPrice) {
+
+			err := r.relay(v.denom)
+			if err != nil {
+				return err
+			}
+
 			v.lastRelay = time.Now()
 			v.lastPrice = price
-
-			return r.relay(v.denom)
+			return nil
 		}
 	}
 
@@ -166,6 +172,7 @@ func deviated(price float64, deviation float64, lastPrice float64) bool {
 	return price > lastPrice*(1+deviation) || price < lastPrice*(1-deviation)
 }
 
+// relay sends a relay message to the Ojo node.
 func (r Relayer) relay(denom string) error {
 	// normalize the coin denom
 	coins, err := sdk.ParseCoinNormalized(r.cfg.Relayer.Tokens)
