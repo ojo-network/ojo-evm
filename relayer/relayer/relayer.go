@@ -83,61 +83,93 @@ func (o *Relayer) Stop() {
 	<-o.closer.Done()
 }
 
+// init initializes the relayer by submitting a relay for
+// each asset in the config and setting the latest price info
+// in memory.
+func (r *Relayer) init(ctx context.Context) error {
+	latestAssets := make([]asset, len(r.cfg.Assets))
+	batch := []string{}
+	for k, v := range r.cfg.Assets {
+		// Get price
+		price, err := r.relayerClient.GetPrice(ctx, v.Denom)
+		if err != nil {
+			r.logger.Err(err).Msg("unable to communicate with ojo node")
+			return err
+		}
+		priceFl, err := price.Amount.Float64()
+		if err != nil {
+			r.logger.Err(err).Msg("unable to convert price to float64")
+			return err
+		}
+
+		// Set latest update in memory
+		latestAssets[k] = asset{
+			lastPrice: priceFl,
+			lastRelay: time.Now(),
+			denom:     v.Denom,
+		}
+
+		// Add to batch
+		batch = append(batch, v.Denom)
+	}
+
+	// Relay price
+	if err := r.relay(batch); err != nil {
+		r.logger.Err(err).Msg("unable to submit initial relays")
+		return err
+	}
+
+	// Set to memory
+	r.latestAssets = latestAssets
+	return nil
+}
+
+// updateMemory takes a set of denoms and updates the memory with the latest price
+// and timestamp.
+func (r *Relayer) updateMemory(ctx context.Context, denoms []string) error {
+	for _, v := range denoms {
+		price, err := r.getPrice(ctx, v)
+		if err != nil {
+			r.logger.Err(err).Msg("unable to communicate with ojo node")
+			return err
+		}
+
+		for k, a := range r.latestAssets {
+			if a.denom == v {
+				r.latestAssets[k].lastPrice = price
+				r.latestAssets[k].lastRelay = time.Now()
+			}
+		}
+	}
+
+	return nil
+}
+
 func (r *Relayer) tick(ctx context.Context) error {
 	r.logger.Debug().Msg("executing relayer tick")
 
-	// Check if it is our first tick
+	// check if it is our first tick
 	if len(r.latestAssets) == 0 {
-		latestAssets := make([]asset, len(r.cfg.Assets))
-		for k, v := range r.cfg.Assets {
-			// Get price
-			price, err := r.relayerClient.GetPrice(ctx, v.Denom)
-			if err != nil {
-				r.logger.Err(err).Msg("unable to communicate with ojo node")
-				return err
-			}
-			priceFl, err := price.Amount.Float64()
-			if err != nil {
-				r.logger.Err(err).Msg("unable to convert price to float64")
-				return err
-			}
-
-			// Set latest update in memory
-			latestAssets[k] = asset{
-				lastPrice: priceFl,
-				lastRelay: time.Now(),
-				denom:     v.Denom,
-			}
-
-			// Relay price
-			if err := r.relay(v.Denom); err != nil {
-				r.logger.Err(err).Msg("unable to relay price")
-				return err
-			}
+		err := r.init(ctx)
+		if err != nil {
+			return err
 		}
-
-		// Set to memory
-		r.latestAssets = latestAssets
 		return nil
 	}
+
+	// if it's not our first tick, check to see if we need
+	// to do any relays.
+
+	// denomsBatch is a slice of denoms that we need to relay
+	batch := []string{}
 
 	// if not, check for heartbeats and deviations
 	for _, v := range r.latestAssets {
 		// if heartbeat needs to be sent, relay
 		if heartbeat(r.cfg.Relayer.Interval, v.lastRelay) {
-			err := r.relay(v.denom)
-			if err != nil {
-				return err
-			}
-
-			// update memory
-			v.lastRelay = time.Now()
-			v.lastPrice, err = r.getPrice(ctx, v.denom)
-			if err != nil {
-				r.logger.Err(err).Msg("unable to communicate with ojo node")
-				return err
-			}
-			return nil
+			batch = append(batch, v.denom)
+			r.logger.Info().Str("denom", v.denom).Msg("heartbeat relay")
+			continue
 		}
 
 		// if price has deviated, send a relay
@@ -146,17 +178,27 @@ func (r *Relayer) tick(ctx context.Context) error {
 			r.logger.Err(err).Msg("unable to communicate with ojo node")
 			return err
 		}
-		if deviated(price, r.cfg.Relayer.Deviation, v.lastPrice) {
-
-			err := r.relay(v.denom)
-			if err != nil {
-				return err
-			}
-
-			v.lastRelay = time.Now()
-			v.lastPrice = price
-			return nil
+		pct, dev := deviated(v.lastPrice, price, r.cfg.Relayer.Deviation)
+		if dev {
+			batch = append(batch, v.denom)
+			r.logger.Info().Str("denom", v.denom).
+				Float64("last_updated_price", v.lastPrice).
+				Float64("new_price", price).
+				Float64("deviation_percentage", pct).
+				Float64("deviation_threshold", r.cfg.Relayer.Deviation).
+				Msg("deviation relay")
 		}
+	}
+
+	// batch relays and then update memory
+	if len(batch) > 0 {
+		if err := r.relay(batch); err != nil {
+			r.logger.Err(err).Msg("unable to relay price")
+			return err
+		}
+		r.updateMemory(ctx, batch)
+	} else {
+		r.logger.Info().Msg("no relays necessary")
 	}
 
 	return nil
@@ -164,16 +206,29 @@ func (r *Relayer) tick(ctx context.Context) error {
 
 // heartbeat checks the time since last relay and returns true if we need to relay.
 func heartbeat(interval time.Duration, lastUpdate time.Time) bool {
-	return time.Since(lastUpdate) > interval
+	return time.Since(lastUpdate) >= interval
 }
 
 // deviated checks if the price has deviated from the last price by the deviation %.
-func deviated(price float64, deviation float64, lastPrice float64) bool {
-	return price > lastPrice*(1+deviation) || price < lastPrice*(1-deviation)
+func deviated(existingPrice float64, newestPrice float64, threshold float64) (float64, bool) {
+	if existingPrice == 0 {
+		return 0, false
+	}
+
+	// calculate the deviation percentage between price and lastPrice
+	deviationPct := (newestPrice - existingPrice) / existingPrice
+
+	// get absolute value
+	if deviationPct < 0 {
+		deviationPct *= -1
+	}
+
+	return deviationPct, deviationPct >= threshold
 }
 
 // relay sends a relay message to the Ojo node.
-func (r Relayer) relay(denom string) error {
+func (r Relayer) relay(denoms []string) error {
+	r.logger.Info().Strs("denoms", denoms).Msg("submitting relay tx")
 	// normalize the coin denom
 	coins, err := sdk.ParseCoinNormalized(r.cfg.Relayer.Tokens)
 	if err != nil {
@@ -187,15 +242,14 @@ func (r Relayer) relay(denom string) error {
 	msg := gmptypes.NewMsgRelay(
 		r.cfg.Account.Address,
 		r.cfg.Relayer.Destination,
-		"0x001", // ojo contract address - empty
 		r.cfg.Relayer.Contract,
-		coins, // tokens we're paying with
-		[]string{denom},
+		"0x001",           // ojo contract address - empty
+		coins,             // tokens we're paying with
+		denoms,            // tokens we're relaying
 		[]byte{},          // command selector - empty
 		[]byte{},          // params - empty, no callback
 		time.Now().Unix(), // unix timestamp
 	)
-
 	currentHeight, err := r.relayerClient.ChainHeight.GetChainHeight()
 	if err != nil {
 		return err

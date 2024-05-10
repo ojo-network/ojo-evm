@@ -66,6 +66,7 @@ func NewRelayerClient(
 	relayerAddrString string,
 	grpcEndpoint string,
 	gas uint64,
+	gasPrices string,
 ) (RelayerClient, error) {
 	relayerAddr, err := sdk.AccAddressFromBech32(relayerAddrString)
 	if err != nil {
@@ -84,6 +85,7 @@ func NewRelayerClient(
 		RelayerAddrString: relayerAddrString,
 		Encoding:          ojoparams.MakeEncodingConfig(),
 		Gas:               gas,
+		GasPrices:         gasPrices,
 		GRPCEndpoint:      grpcEndpoint,
 	}
 
