@@ -239,6 +239,8 @@ func (r Relayer) relay(denoms []string) error {
 		coins.Denom = denomTrace.IBCDenom()
 	}
 
+	abcd := []byte{0x41, 0x42, 0x43, 0x44}
+
 	msg := gmptypes.NewMsgRelay(
 		r.cfg.Account.Address,
 		r.cfg.Relayer.Destination,
@@ -246,8 +248,8 @@ func (r Relayer) relay(denoms []string) error {
 		"0x001",           // ojo contract address - empty
 		coins,             // tokens we're paying with
 		denoms,            // tokens we're relaying
-		[]byte{},          // command selector - empty
-		[]byte{},          // params - empty, no callback
+		abcd,              // command selector - empty
+		abcd,              // params - empty, no callback
 		time.Now().Unix(), // unix timestamp
 	)
 	currentHeight, err := r.relayerClient.ChainHeight.GetChainHeight()
