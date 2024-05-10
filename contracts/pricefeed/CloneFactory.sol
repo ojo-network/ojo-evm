@@ -22,10 +22,11 @@ contract CloneFactory {
 
     /// @notice Create clone of PriceFeed contract and initialize it
     /// @dev Clone method returns address of created clone
-    /// @param _initializationData Data to initialize clone with
-    function createPriceFeed(string calldata _initializationData) external {
+    /// @param _priceFeedDecimals Amount of decimals a PriceFeed is denominiated in.
+    /// @param _priceFeedDescription Description of PriceFeed.
+    function createPriceFeed(uint8 _priceFeedDecimals, string calldata _priceFeedDescription) external {
         address priceFeedCloneAddress = Clones.clone(implementationAddress);
-        PriceFeed(priceFeedCloneAddress).initialize(_initializationData);
+        PriceFeed(priceFeedCloneAddress).initialize(_priceFeedDecimals, _priceFeedDescription);
         PriceFeedCloneAddresses[msg.sender] = priceFeedCloneAddress;
         emit PriceFeedCloneCreated(priceFeedCloneAddress);
     }
