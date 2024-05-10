@@ -178,7 +178,7 @@ func (r *Relayer) tick(ctx context.Context) error {
 			r.logger.Err(err).Msg("unable to communicate with ojo node")
 			return err
 		}
-		pct, dev := deviated(price, r.cfg.Relayer.Deviation, v.lastPrice)
+		pct, dev := deviated(v.lastPrice, price, r.cfg.Relayer.Deviation)
 		if dev {
 			batch = append(batch, v.denom)
 			r.logger.Info().Str("denom", v.denom).
@@ -206,14 +206,24 @@ func (r *Relayer) tick(ctx context.Context) error {
 
 // heartbeat checks the time since last relay and returns true if we need to relay.
 func heartbeat(interval time.Duration, lastUpdate time.Time) bool {
-	return time.Since(lastUpdate) > interval
+	return time.Since(lastUpdate) >= interval
 }
 
 // deviated checks if the price has deviated from the last price by the deviation %.
-func deviated(price float64, deviation float64, lastPrice float64) (float64, bool) {
+func deviated(existingPrice float64, newestPrice float64, threshold float64) (float64, bool) {
+	if existingPrice == 0 {
+		return 0, false
+	}
+
 	// calculate the deviation percentage between price and lastPrice
-	deviationPct := (price - lastPrice) / lastPrice
-	return deviationPct, deviationPct > deviation
+	deviationPct := (newestPrice - existingPrice) / existingPrice
+
+	// get absolute value
+	if deviationPct < 0 {
+		deviationPct *= -1
+	}
+
+	return deviationPct, deviationPct >= threshold
 }
 
 // relay sends a relay message to the Ojo node.
