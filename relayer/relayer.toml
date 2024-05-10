@@ -1,0 +1,27 @@
+gas = 50000
+
+[account]
+address = "ojo1zypqa76je7pxsdwkfah6mu9a583sju6xzthge3"
+chain_id = "ojo-testnet"
+
+[keyring]
+backend = "test"
+dir = "/Users/username/.ojo"
+
+[rpc]
+grpc_endpoint = "localhost:9090"
+rpc_timeout = "100ms"
+tmrpc_endpoint = "http://localhost:26657"
+
+[relayer]
+interval = "24h"
+deviation = "0.05"
+destination = "Arbitrum"
+contract = "0x001"
+tokens = "100ibc/xyz"
+
+# These are the assets we want to periodically push:
+[[assets]]
+denom = "BTC"
+[[assets]]
+denom = "ETH"
