@@ -1,8 +1,9 @@
-gas = 50000
+gas = 1000000
+gas_prices = "0.025uojo"
 
 [account]
-address = "ojo1zypqa76je7pxsdwkfah6mu9a583sju6xzthge3"
-chain_id = "ojo-testnet"
+address = "ojo1kjqcup59v5jtlykewz90em6v0cz7tqpd7u7nyr"
+chain_id = "agamotto"
 
 [keyring]
 backend = "test"
@@ -14,7 +15,10 @@ rpc_timeout = "100ms"
 tmrpc_endpoint = "http://localhost:26657"
 
 [relayer]
+# "heartbeat" interval for the relayer
 interval = "24h"
+# deviation expressed as a percentage
+# e.g., 0.01 means 1%
 deviation = "0.05"
 destination = "Arbitrum"
 contract = "0x001"
