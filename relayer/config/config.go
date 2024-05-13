@@ -26,6 +26,7 @@ type (
 		Keyring   Keyring  `mapstructure:"keyring" validate:"required,gt=0,dive,required"`
 		RPC       RPC      `mapstructure:"rpc" validate:"required,gt=0,dive,required"`
 		Gas       uint64   `mapstructure:"gas"`
+		GasPrices string   `mapstructure:"gas_prices"`
 		Relayer   Relayer  `mapstructure:"relayer" validate:"required,gt=0,dive,required"`
 		Assets    []Assets `mapstructure:"assets" validate:"required,gt=0,dive,required"`
 	}

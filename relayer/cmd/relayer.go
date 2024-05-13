@@ -121,6 +121,7 @@ func relayerCmdHandler(cmd *cobra.Command, args []string) error {
 		cfg.Account.Address,
 		cfg.RPC.GRPCEndpoint,
 		cfg.Gas,
+		cfg.GasPrices,
 	)
 	if err != nil {
 		return err
