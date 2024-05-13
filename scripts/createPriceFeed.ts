@@ -4,7 +4,7 @@ import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
 
 async function main() {
-    const cloneFactoryAddress = process.env.CLONE_FACTORY_ADDRESS as string;
+    const cloneFactoryAddress = process.env.CLONE_FACTORY_CONTRACT_ADDRESS as string;
     const priceFeedDecimals = 18;
     const priceFeedDescription = "ETH";
 
@@ -14,9 +14,9 @@ async function main() {
         throw new Error('Invalid private key. Make sure the PRIVATE_KEY environment variable is set.');
     }
 
-    const mainnet = Boolean(process.env.MAINNET)
+    const mainnet = process.env.MAINNET as string
     let evmChains = testnet_chains.map((chain) => ({ ...chain }));
-    if (mainnet === true) {
+    if (mainnet === "TRUE") {
         evmChains = mainnet_chains.map((chain) => ({ ...chain }));
     }
 

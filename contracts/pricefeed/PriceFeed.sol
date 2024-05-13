@@ -9,9 +9,9 @@ import "../OjoTypes.sol";
 /// @title Contract for calling Ojo's oracle contract with chainlink's AggregatorV3Interface implemented.
 /// @author Ojo Network (https://docs.ojo.network/)
 contract PriceFeed is Initializable, AggregatorV3Interface {
-    uint8 public priceFeedDecimals;
+    uint8 private priceFeedDecimals;
 
-    string public priceFeedDescription;
+    string private priceFeedDescription;
 
     IOjo public immutable ojo;
 
