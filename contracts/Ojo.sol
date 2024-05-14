@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol";
+import "@axelar-network/axelar-gmp-sdk-solidity/contracts/express/AxelarExpressExecutable.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol";
 import "@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol";
@@ -9,7 +9,7 @@ import "@axelar-network/axelar-gmp-sdk-solidity/contracts/upgradable/Upgradable.
 import "./IOjo.sol";
 import "./OjoTypes.sol";
 
-contract Ojo is IOjo, AxelarExecutable, Upgradable {
+contract Ojo is IOjo, AxelarExpressExecutable, Upgradable {
     IAxelarGasService public immutable gasReceiver;
 
     string public ojoChain;
@@ -24,7 +24,7 @@ contract Ojo is IOjo, AxelarExecutable, Upgradable {
 
     error AlreadyInitialized();
 
-    constructor(address gateway_, address gasReceiver_) AxelarExecutable(gateway_) {
+    constructor(address gateway_, address gasReceiver_) AxelarExpressExecutable(gateway_) {
         gasReceiver = IAxelarGasService(gasReceiver_);
     }
 

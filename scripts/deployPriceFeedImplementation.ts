@@ -1,12 +1,10 @@
 import { Wallet, ethers } from "ethers";
-import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
+import PriceFeed from '../artifacts/contracts/pricefeed/PriceFeed.sol/PriceFeed.json';
 import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
-import { upgradeUpgradable } from './utils/upgradable';
 
 async function main() {
-    const ojoProxyAddress = process.env.OJO_CONTRACT_ADDRESS;
-    const axelarGasReceiverAddress = process.env.AXELAR_GAS_RECEIVER_ADDRESS;
+    const ojoAddress = process.env.OJO_CONTRACT_ADDRESS;
 
     const privateKey = process.env.PRIVATE_KEY;
 
@@ -26,14 +24,9 @@ async function main() {
         const balance = await provider.getBalance(wallet.address)
         console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-        const upgradeTx = await upgradeUpgradable(
-            ojoProxyAddress,
-            wallet,
-            Ojo,
-            [chain.gateway, axelarGasReceiverAddress]
-        );
-
-        console.log(`${chain.name}, upgrade tx: ${upgradeTx.hash}`);
+        const priceFeedFactory = new ethers.ContractFactory(PriceFeed.abi, PriceFeed.bytecode, wallet)
+        const priceFeed = await priceFeedFactory.deploy(ojoAddress)
+        console.log(`${chain.name}, address: ${await priceFeed.getAddress()}`);
     }
 }
 

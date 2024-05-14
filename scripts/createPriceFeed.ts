@@ -1,12 +1,12 @@
 import { Wallet, ethers } from "ethers";
-import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
+import CloneFactory from '../artifacts/contracts/pricefeed/CloneFactory.sol/CloneFactory.json';
 import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
-import { upgradeUpgradable } from './utils/upgradable';
 
 async function main() {
-    const ojoProxyAddress = process.env.OJO_CONTRACT_ADDRESS;
-    const axelarGasReceiverAddress = process.env.AXELAR_GAS_RECEIVER_ADDRESS;
+    const cloneFactoryAddress = process.env.CLONE_FACTORY_CONTRACT_ADDRESS as string;
+    const priceFeedDecimals = 18;
+    const priceFeedDescription = "ETH";
 
     const privateKey = process.env.PRIVATE_KEY;
 
@@ -26,14 +26,8 @@ async function main() {
         const balance = await provider.getBalance(wallet.address)
         console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-        const upgradeTx = await upgradeUpgradable(
-            ojoProxyAddress,
-            wallet,
-            Ojo,
-            [chain.gateway, axelarGasReceiverAddress]
-        );
-
-        console.log(`${chain.name}, upgrade tx: ${upgradeTx.hash}`);
+        const cloneFactoryContract = new ethers.Contract(cloneFactoryAddress, CloneFactory.abi, wallet)
+        await cloneFactoryContract.createPriceFeed(priceFeedDecimals, priceFeedDescription)
     }
 }
 
