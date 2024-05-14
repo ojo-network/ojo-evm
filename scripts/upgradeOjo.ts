@@ -14,9 +14,9 @@ async function main() {
         throw new Error('Invalid private key. Make sure the PRIVATE_KEY environment variable is set.');
     }
 
-    const mainnet = Boolean(process.env.MAINNET)
+    const mainnet = process.env.MAINNET as string
     let evmChains = testnet_chains.map((chain) => ({ ...chain }));
-    if (mainnet === true) {
+    if (mainnet === "TRUE") {
         evmChains = mainnet_chains.map((chain) => ({ ...chain }));
     }
 
