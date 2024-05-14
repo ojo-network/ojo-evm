@@ -1,4 +1,4 @@
-name: Release cw-relayer and contracts
+name: Release relayer and contracts
 
 on:
   push:
@@ -60,7 +60,7 @@ jobs:
         with:
           go-version: 1.19
           cache: true
-          cache-dependency-path: cw-relayer/go.sum
+          cache-dependency-path: relayer/go.sum
 
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/*}" >> $GITHUB_ENV
@@ -96,7 +96,7 @@ jobs:
           # Ref: https://github.com/goreleaser/goreleaser/pull/2503
           version: v0.179.0
           args: release --rm-dist --skip-validate
-          workdir: cw-relayer
+          workdir: relayer
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GORELEASER_CURRENT_TAG: ${{ env.RELEASE_VERSION }}
@@ -119,7 +119,7 @@ jobs:
       - name: testnet
         uses: ./.github/relayer-testnet
         with:
-          RELAYER_BINARY_NAME: cw-relayer
+          RELAYER_BINARY_NAME: relayer
           GLIBC_VERSION: ${{ env.GLIBC_VERSION }}
           RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
           PULUMI_PROJECT_DIR: infra/
