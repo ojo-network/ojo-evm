@@ -48,6 +48,7 @@ func init() {
 	params.SetAddressPrefixes()
 	rootCmd.PersistentFlags().String(flagLogLevel, zerolog.InfoLevel.String(), "logging level")
 	rootCmd.PersistentFlags().String(flagLogFormat, logLevelText, "logging format; must be either json or text")
+	rootCmd.AddCommand(getVersionCmd())
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
