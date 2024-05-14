@@ -2,6 +2,7 @@ import { Wallet, ethers } from "ethers";
 import MockOjo from '../artifacts/contracts/MockOjo.sol/MockOjo.json';
 import Create2Deployer from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/deploy/Create2Deployer.sol/Create2Deployer.json';
 import testnet_chains from '../testnet_chains.json';
+import mainnet_chains from '../mainnet_chains.json';
 
 async function main() {
   const ojoContractddress = process.env.OJO_CONTRACT_ADDRESS;
@@ -13,7 +14,11 @@ async function main() {
     throw new Error('Invalid private key. Make sure the PRIVATE_KEY environment variable is set.');
   }
 
-  const evmChains = testnet_chains.map((chain) => ({ ...chain }));
+  const mainnet = process.env.MAINNET as string
+  let evmChains = testnet_chains.map((chain) => ({ ...chain }));
+  if (mainnet === "TRUE") {
+      evmChains = mainnet_chains.map((chain) => ({ ...chain }));
+  }
 
   for (const chain of evmChains) {
     const provider = new ethers.JsonRpcProvider(chain.rpc)
