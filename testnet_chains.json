@@ -77,10 +77,24 @@
         "tokenSymbol": "ETH"
     },
     {
+        "name": "Optimism Sepolia",
+        "chainId": 11155420,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://sepolia.optimism.io",
+        "tokenSymbol": "ETH"
+    },
+    {
         "name": "Base Goerli",
         "chainId": 84531,
         "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
         "rpc": "https://goerli.base.org",
+        "tokenSymbol": "ETH"
+    },
+    {
+        "name": "Base Sepolia",
+        "chainId": 84532,
+        "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
+        "rpc": "https://base-sepolia-rpc.publicnode.com",
         "tokenSymbol": "ETH"
     },
     {
