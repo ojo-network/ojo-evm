@@ -20,7 +20,9 @@ import {
   arbitrumGoerli,
   arbitrumSepolia,
   optimismGoerli,
+  optimismSepolia,
   baseGoerli,
+  baseSepolia,
   mantleTestnet,
   celoAlfajores,
   kavaTestnet,
@@ -39,8 +41,8 @@ function getChains(): Chain[] {
   } else {
     return [goerli, sepolia, bscTestnet, polygonMumbai, polygonZkEvmTestnet,
       avalancheFuji, fantomTestnet, moonbaseAlpha, arbitrumGoerli,
-      arbitrumSepolia, optimismGoerli, baseGoerli, mantleTestnet,
-      celoAlfajores, kavaTestnet, filecoinCalibration, lineaTestnet]
+      arbitrumSepolia, optimismGoerli, optimismSepolia, baseGoerli, baseSepolia,
+      mantleTestnet, celoAlfajores, kavaTestnet, filecoinCalibration, lineaTestnet]
   }
 }
 
