@@ -10,9 +10,9 @@ type AssetFormParameters = {
 
 const AssetForm: React.FC<AssetFormParameters> = ({ assetNames, setAssetNames, selectAll, setSelectAll }) => {
   const availableAssets = [
-      "ATOM","AXL","BNB","BTC","CMDX","CMST","CRV","DAI","DOT","ETH",
-      "INJ","IST","JUNO","KUJI","LINK","LUNA","MATIC","MKR","MNTA",
-      "OSMO","RETH","SCRT","SEI","STARS","STATOM","STJUNO","STOSMO",
+      "ARCH", "ATOM","AXL","BNB","BTC","CMDX","CMST","CRV","DAI","DOT","ETH",
+      "INJ","IST","JUNO","KUJI","LINK","LUNA","MATIC","MKR","MNTA","ORDI",
+      "OSMO","RETH","SATS","SCRT","SEI","STARS","STATOM","STJUNO","STOSMO",
       "SUSHI","USDC","USDT","USK","WBTC","WETH","XRP"
   ];
 
