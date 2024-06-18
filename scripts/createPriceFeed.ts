@@ -5,8 +5,9 @@ import mainnet_chains from '../mainnet_chains.json';
 
 async function main() {
     const cloneFactoryAddress = process.env.CLONE_FACTORY_CONTRACT_ADDRESS as string;
-    const priceFeedDecimals = 18;
-    const priceFeedDescription = "ETH";
+    const priceFeedChain = process.env.PRICE_FEED_EVM_CHAIN as string;
+    const priceFeedDecimals = process.env.PRICE_FEED_DECIMALS as any;
+    const priceFeedDescriptions = process.env.PRICE_FEED_DESCRIPTIONS as any;
 
     const privateKey = process.env.PRIVATE_KEY;
 
@@ -21,13 +22,17 @@ async function main() {
     }
 
     for (const chain of evmChains) {
-        const provider = new ethers.JsonRpcProvider(chain.rpc)
-        const wallet = new Wallet(privateKey, provider);
-        const balance = await provider.getBalance(wallet.address)
-        console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
+        if (chain.name === priceFeedChain) {
+            const provider = new ethers.JsonRpcProvider(chain.rpc)
+            const wallet = new Wallet(privateKey, provider);
+            const balance = await provider.getBalance(wallet.address)
+            console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-        const cloneFactoryContract = new ethers.Contract(cloneFactoryAddress, CloneFactory.abi, wallet)
-        await cloneFactoryContract.createPriceFeed(priceFeedDecimals, priceFeedDescription)
+            const cloneFactoryContract = new ethers.Contract(cloneFactoryAddress, CloneFactory.abi, wallet)
+            for (const priceFeedDescription of priceFeedDescriptions) {
+                await cloneFactoryContract.createPriceFeed(priceFeedDecimals, priceFeedDescription)
+            }
+        }
     }
 }
 

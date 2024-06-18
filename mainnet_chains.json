@@ -4,20 +4,47 @@
         "chainId": 42161,
         "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
         "rpc": "https://arbitrum-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        "tokenSymbol": "ETH"
+        "tokenSymbol": "ETH",
+        "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
+        "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
+        "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "priceFeedImplementation": "0xa1aB70C0F3725AcA1D1e85Bd4402Dd2d5F6AFf19",
+        "cloneFactory": "0xd285A4F0Ad1BB6b1Db8cD3dD839E9f423938ef9E"
     },
     {
         "name": "Optimism",
         "chainId": 10,
         "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
         "rpc": "https://optimism-mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        "tokenSymbol": "ETH"
+        "tokenSymbol": "ETH",
+        "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
+        "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
+        "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "priceFeedImplementation": "0xfaC9d315b9b558e10eBdb0462aA42577aADe6601",
+        "cloneFactory": "0x02Ed15B70D4dE1209c3Dd5a75195CB3f3dDB8B07"
     },
     {
         "name": "Base",
         "chainId": 8453,
         "gateway": "0xe432150cce91c13a887f7D836923d5597adD8E31",
         "rpc": "https://developer-access-mainnet.base.org",
-        "tokenSymbol": "ETH"
+        "tokenSymbol": "ETH",
+        "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
+        "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
+        "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "priceFeedImplementation": "0x09d43904C8ABd470df1B793df68904A9714558CF",
+        "cloneFactory": "0xfaC9d315b9b558e10eBdb0462aA42577aADe6601"
+    },
+    {
+        "name": "Ethereum",
+        "chainId": 1,
+        "gateway": "0x4F4495243837681061C4743b74B3eEdf548D56A5",
+        "rpc": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        "tokenSymbol": "ETH",
+        "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
+        "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
+        "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "priceFeedImplementation": "",
+        "cloneFactory": ""
     }
 ]

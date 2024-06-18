@@ -5,8 +5,7 @@ import mainnet_chains from '../mainnet_chains.json';
 import { upgradeUpgradable } from './utils/upgradable';
 
 async function main() {
-    const ojoProxyAddress = process.env.OJO_CONTRACT_ADDRESS;
-    const axelarGasReceiverAddress = process.env.AXELAR_GAS_RECEIVER_ADDRESS;
+    const evmChains = JSON.parse(process.env.EVM_CHAINS!);
 
     const privateKey = process.env.PRIVATE_KEY;
 
@@ -15,25 +14,27 @@ async function main() {
     }
 
     const mainnet = process.env.MAINNET as string
-    let evmChains = testnet_chains.map((chain) => ({ ...chain }));
+    let chains = testnet_chains.map((chain) => ({ ...chain }));
     if (mainnet === "TRUE") {
-        evmChains = mainnet_chains.map((chain) => ({ ...chain }));
+        chains = mainnet_chains.map((chain) => ({ ...chain }));
     }
 
-    for (const chain of evmChains) {
-        const provider = new ethers.JsonRpcProvider(chain.rpc)
-        const wallet = new Wallet(privateKey, provider);
-        const balance = await provider.getBalance(wallet.address)
-        console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
+    for (const chain of chains) {
+        if (evmChains.includes(chain.name)) {
+            const provider = new ethers.JsonRpcProvider(chain.rpc)
+            const wallet = new Wallet(privateKey, provider);
+            const balance = await provider.getBalance(wallet.address)
+            console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-        const upgradeTx = await upgradeUpgradable(
-            ojoProxyAddress,
-            wallet,
-            Ojo,
-            [chain.gateway, axelarGasReceiverAddress]
-        );
+            const upgradeTx = await upgradeUpgradable(
+                chain.ojoContract,
+                wallet,
+                Ojo,
+                [chain.gateway, chain.gasReceiver]
+            );
 
-        console.log(`${chain.name}, upgrade tx: ${upgradeTx.hash}`);
+            console.log(`${chain.name}, upgrade tx: ${upgradeTx.hash}`);
+        }
     }
 }
 

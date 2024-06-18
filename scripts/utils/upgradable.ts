@@ -27,6 +27,17 @@ export async function deployCreate2InitUpgradable(
     return new ethers.Contract(await proxy.getAddress(), implementationJson.abi, wallet);
 }
 
+export async function estimateDeploymentGas(
+    wallet: ethers.Wallet,
+    implementationJson: { abi: ethers.Interface | ethers.InterfaceAbi; bytecode: ethers.BytesLike | { object: string; }; },
+    implementationConstructorArgs: any
+) {
+    const implementationFactory = new ethers.ContractFactory(implementationJson.abi, implementationJson.bytecode, wallet);
+    const deployTransaction = await implementationFactory.getDeployTransaction(...implementationConstructorArgs);
+    const estimatedGas = await wallet.estimateGas(deployTransaction);
+    return estimatedGas;
+}
+
 export async function upgradeUpgradable(
     proxyAddress: any,
     wallet: ethers.Wallet,
