@@ -44,7 +44,7 @@
         "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
-        "priceFeedImplementation": "",
-        "cloneFactory": ""
+        "priceFeedImplementation": "0xde471274F1B684476d341eB131224F389AD4A270",
+        "cloneFactory": "0x710C8a3c8CB393cA24748849de3585b5C48D4D0c"
     }
 ]

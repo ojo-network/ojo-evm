@@ -4,10 +4,9 @@ import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
 
 async function main() {
-    const cloneFactoryAddress = process.env.CLONE_FACTORY_CONTRACT_ADDRESS as string;
-    const priceFeedChain = process.env.PRICE_FEED_EVM_CHAIN as string;
+    const evmChains = JSON.parse(process.env.EVM_CHAINS!);
     const priceFeedDecimals = process.env.PRICE_FEED_DECIMALS as any;
-    const priceFeedDescriptions = process.env.PRICE_FEED_DESCRIPTIONS as any;
+    const priceFeedDescriptions = JSON.parse(process.env.PRICE_FEED_DESCRIPTIONS!);
 
     const privateKey = process.env.PRIVATE_KEY;
 
@@ -16,21 +15,30 @@ async function main() {
     }
 
     const mainnet = process.env.MAINNET as string
-    let evmChains = testnet_chains.map((chain) => ({ ...chain }));
+    let chains = testnet_chains.map((chain) => ({ ...chain }));
     if (mainnet === "TRUE") {
-        evmChains = mainnet_chains.map((chain) => ({ ...chain }));
+        chains = mainnet_chains.map((chain) => ({ ...chain }));
     }
 
-    for (const chain of evmChains) {
-        if (chain.name === priceFeedChain) {
+    for (const chain of chains) {
+        if (evmChains.includes(chain.name)) {
             const provider = new ethers.JsonRpcProvider(chain.rpc)
             const wallet = new Wallet(privateKey, provider);
             const balance = await provider.getBalance(wallet.address)
             console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-            const cloneFactoryContract = new ethers.Contract(cloneFactoryAddress, CloneFactory.abi, wallet)
+            const cloneFactoryContract = new ethers.Contract(chain.cloneFactory, CloneFactory.abi, wallet)
             for (const priceFeedDescription of priceFeedDescriptions) {
-                await cloneFactoryContract.createPriceFeed(priceFeedDecimals, priceFeedDescription)
+                console.log(`Deploying ${priceFeedDescription} price feed on ${chain.name}`);
+                try {
+                    const tx = await cloneFactoryContract.createPriceFeed(priceFeedDecimals, priceFeedDescription);
+                    console.log(`Transaction sent: ${tx.hash}`);
+
+                    const receipt = await tx.wait();
+                    console.log(`Transaction mined: ${receipt.transactionHash}`);
+                } catch (error) {
+                    console.error(`Failed to deploy ${priceFeedDescription} on ${chain.name}:`, error);
+                }
             }
         }
     }
