@@ -1,10 +1,12 @@
 import { Wallet, ethers } from "ethers";
-import PriceFeed from '../artifacts/contracts/pricefeed/PriceFeed.sol/PriceFeed.json';
+import CloneFactory from '../artifacts/contracts/pricefeed/CloneFactory.sol/CloneFactory.json';
 import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
 
 async function main() {
     const evmChains = JSON.parse(process.env.EVM_CHAINS!);
+    const priceFeedDecimals = process.env.PRICE_FEED_DECIMALS as any;
+    const priceFeedDescriptions = JSON.parse(process.env.PRICE_FEED_DESCRIPTIONS!);
 
     const privateKey = process.env.PRIVATE_KEY;
 
@@ -25,9 +27,19 @@ async function main() {
             const balance = await provider.getBalance(wallet.address)
             console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-            const priceFeedFactory = new ethers.ContractFactory(PriceFeed.abi, PriceFeed.bytecode, wallet)
-            const priceFeed = await priceFeedFactory.deploy(chain.ojoContract)
-            console.log(`${chain.name}, address: ${await priceFeed.getAddress()}`);
+            const cloneFactoryContract = new ethers.Contract(chain.cloneFactory, CloneFactory.abi, wallet)
+            for (const priceFeedDescription of priceFeedDescriptions) {
+                console.log(`Deploying ${priceFeedDescription} price feed on ${chain.name}`);
+                try {
+                    const tx = await cloneFactoryContract.createPriceFeed(priceFeedDecimals, priceFeedDescription);
+                    console.log(`Transaction sent: ${tx.hash}`);
+
+                    const receipt = await tx.wait();
+                    console.log(`Transaction mined: ${receipt.transactionHash}`);
+                } catch (error) {
+                    console.error(`Failed to deploy ${priceFeedDescription} on ${chain.name}:`, error);
+                }
+            }
         }
     }
 }
