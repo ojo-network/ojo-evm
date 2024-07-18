@@ -2,17 +2,18 @@ package relayer
 
 import (
 	"context"
-	"strings"
+	"fmt"
 	"time"
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
 	"github.com/ojo-network/ojo-evm/relayer/config"
 	"github.com/ojo-network/ojo-evm/relayer/relayer/client"
 	gmptypes "github.com/ojo-network/ojo/x/gmp/types"
 	pfsync "github.com/ojo-network/price-feeder/pkg/sync"
 	"github.com/rs/zerolog"
+
+	math "cosmossdk.io/math"
 )
 
 const (
@@ -198,7 +199,7 @@ func (r *Relayer) tick(ctx context.Context) error {
 		}
 		r.updateMemory(ctx, batch)
 	} else {
-		r.logger.Info().Msg("no relays necessary")
+		r.logger.Debug().Msg("no relays necessary")
 	}
 
 	return nil
@@ -229,15 +230,26 @@ func deviated(existingPrice float64, newestPrice float64, threshold float64) (fl
 // relay sends a relay message to the Ojo node.
 func (r Relayer) relay(denoms []string) error {
 	r.logger.Info().Strs("denoms", denoms).Msg("submitting relay tx")
-	// normalize the coin denom
-	coins, err := sdk.ParseCoinNormalized(r.cfg.Relayer.Tokens)
+
+	gasFee, err := client.EstimateGasFee(
+		r.cfg.Relayer.Destination,
+		r.cfg.Relayer.Contract,
+		r.cfg.AxelarGas.Default,
+		r.cfg.AxelarGas.Multiplier,
+	)
 	if err != nil {
-		return err
+		r.logger.Err(err).Str("default", r.cfg.AxelarGas.Default).Msg("unable to estimate gas fee")
+		defaultGasFee, ok := math.NewIntFromString(r.cfg.AxelarGas.Default)
+		if !ok {
+			return fmt.Errorf("unable to convert default gas fee to int")
+		}
+		gasFee = defaultGasFee
 	}
-	if !strings.HasPrefix(coins.Denom, "ibc/") {
-		denomTrace := ibctransfertypes.ParseDenomTrace(coins.Denom)
-		coins.Denom = denomTrace.IBCDenom()
+	coins := sdk.Coin{
+		Denom:  r.cfg.AxelarGas.Denom,
+		Amount: gasFee,
 	}
+	r.logger.Info().Strs("gas_fee", []string{coins.String()}).Msg("estimated gas fee")
 
 	msg := gmptypes.NewMsgRelay(
 		r.cfg.Account.Address,
