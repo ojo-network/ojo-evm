@@ -21,14 +21,15 @@ var (
 type (
 	// Config defines all necessary configuration parameters.
 	Config struct {
-		ConfigDir string   `mapstructure:"config_dir"`
-		Account   Account  `mapstructure:"account" validate:"required,gt=0,dive,required"`
-		Keyring   Keyring  `mapstructure:"keyring" validate:"required,gt=0,dive,required"`
-		RPC       RPC      `mapstructure:"rpc" validate:"required,gt=0,dive,required"`
-		Gas       uint64   `mapstructure:"gas"`
-		GasPrices string   `mapstructure:"gas_prices"`
-		Relayer   Relayer  `mapstructure:"relayer" validate:"required,gt=0,dive,required"`
-		Assets    []Assets `mapstructure:"assets" validate:"required,gt=0,dive,required"`
+		ConfigDir string    `mapstructure:"config_dir"`
+		Account   Account   `mapstructure:"account" validate:"required,gt=0,dive,required"`
+		Keyring   Keyring   `mapstructure:"keyring" validate:"required,gt=0,dive,required"`
+		RPC       RPC       `mapstructure:"rpc" validate:"required,gt=0,dive,required"`
+		Gas       uint64    `mapstructure:"gas"`
+		GasPrices string    `mapstructure:"gas_prices"`
+		Relayer   Relayer   `mapstructure:"relayer" validate:"required,gt=0,dive,required"`
+		Assets    []Assets  `mapstructure:"assets" validate:"required,gt=0,dive,required"`
+		AxelarGas AxelarGas `mapstructure:"axelar_gas" validate:"required,gt=0,dive,required"`
 	}
 
 	// Account defines account related configuration that is related to the Ojo
@@ -56,7 +57,12 @@ type (
 		Deviation   float64       `mapstructure:"deviation" validate:"required"`
 		Destination string        `mapstructure:"destination" validate:"required"`
 		Contract    string        `mapstructure:"contract" validate:"required"`
-		Tokens      string        `mapstructure:"tokens" validate:"required"`
+	}
+
+	AxelarGas struct {
+		Denom      string `mapstructure:"denom" validate:"required"`
+		Multiplier string `mapstructure:"multiplier" validate:"required"`
+		Default    string `mapstructure:"default" validate:"required"`
 	}
 
 	Assets struct {

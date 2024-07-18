@@ -274,7 +274,10 @@ func (rc RelayerClient) BroadcastTx(nextBlockHeight, timeoutHeight int64, msgs .
 		resp, err := BroadcastTx(clientCtx, factory, msgs...)
 		if resp != nil && resp.Code != 0 {
 			telemetry.IncrCounter(1, "failure", "tx", "code")
-			err = fmt.Errorf("invalid response code from tx: %d", resp.Code)
+			err = fmt.Errorf("invalid response code from tx: %d. msg: %s",
+				resp.Code,
+				resp.RawLog,
+			)
 		}
 		if err != nil {
 			var (
