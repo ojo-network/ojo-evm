@@ -4,7 +4,7 @@ import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
 
 async function main () {
-    const priceFeedImplementation = process.env.PRICE_FEED_IMPLEMENTATION_CONTRACT_ADDRESS;
+    const evmChains = JSON.parse(process.env.EVM_CHAINS!);
 
     const privateKey = process.env.PRIVATE_KEY;
 
@@ -13,20 +13,22 @@ async function main () {
     }
 
     const mainnet = process.env.MAINNET as string
-    let evmChains = testnet_chains.map((chain) => ({ ...chain }));
+    let chains = testnet_chains.map((chain) => ({ ...chain }));
     if (mainnet === "TRUE") {
-        evmChains = mainnet_chains.map((chain) => ({ ...chain }));
+        chains = mainnet_chains.map((chain) => ({ ...chain }));
     }
 
-    for (const chain of evmChains) {
-        const provider = new ethers.JsonRpcProvider(chain.rpc)
-        const wallet = new Wallet(privateKey, provider);
-        const balance = await provider.getBalance(wallet.address)
-        console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
+    for (const chain of chains) {
+        if (evmChains.includes(chain.name)) {
+            const provider = new ethers.JsonRpcProvider(chain.rpc)
+            const wallet = new Wallet(privateKey, provider);
+            const balance = await provider.getBalance(wallet.address)
+            console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-        const priceFeedFactory = new ethers.ContractFactory(CloneFactory.abi, CloneFactory.bytecode, wallet)
-        const priceFeed = await priceFeedFactory.deploy(priceFeedImplementation)
-        console.log(`${chain.name}, address: ${await priceFeed.getAddress()}`);
+            const priceFeedFactory = new ethers.ContractFactory(CloneFactory.abi, CloneFactory.bytecode, wallet)
+            const priceFeed = await priceFeedFactory.deploy(chain.priceFeedImplementation)
+            console.log(`${chain.name}, address: ${await priceFeed.getAddress()}`);
+        }
     }
 }
 

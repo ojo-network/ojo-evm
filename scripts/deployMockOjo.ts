@@ -5,8 +5,7 @@ import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
 
 async function main() {
-  const ojoContractddress = process.env.OJO_CONTRACT_ADDRESS;
-  const create2DeployerAddress = process.env.CREATE2_DEPLOYER_ADDRESS as string;
+  const evmChains = JSON.parse(process.env.EVM_CHAINS!);
 
   const privateKey = process.env.PRIVATE_KEY;
 
@@ -15,32 +14,34 @@ async function main() {
   }
 
   const mainnet = process.env.MAINNET as string
-  let evmChains = testnet_chains.map((chain) => ({ ...chain }));
+  let chains = testnet_chains.map((chain) => ({ ...chain }));
   if (mainnet === "TRUE") {
-      evmChains = mainnet_chains.map((chain) => ({ ...chain }));
+    chains = mainnet_chains.map((chain) => ({ ...chain }));
   }
 
-  for (const chain of evmChains) {
-    const provider = new ethers.JsonRpcProvider(chain.rpc)
-    const wallet = new Wallet(privateKey, provider);
-    const balance = await provider.getBalance(wallet.address)
-    console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
+  for (const chain of chains) {
+    if (evmChains.includes(chain.name)) {
+      const provider = new ethers.JsonRpcProvider(chain.rpc)
+      const wallet = new Wallet(privateKey, provider);
+      const balance = await provider.getBalance(wallet.address)
+      console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-    const deployerContract = new ethers.Contract(create2DeployerAddress, Create2Deployer.abi, wallet);
+      const deployerContract = new ethers.Contract(chain.create2Deployer, Create2Deployer.abi, wallet);
 
-    const salt = ethers.zeroPadValue(ethers.toUtf8Bytes("MockOjo"), 32);
+      const salt = ethers.zeroPadValue(ethers.toUtf8Bytes("MockOjo"), 32);
 
-    const creationCode = ethers.solidityPacked(
+      const creationCode = ethers.solidityPacked(
         ["bytes", "bytes"],
-        [MockOjo.bytecode, ethers.AbiCoder.defaultAbiCoder().encode(["address"], [ojoContractddress])]
-    );
+        [MockOjo.bytecode, ethers.AbiCoder.defaultAbiCoder().encode(["address"], [chain.ojoContract])]
+      );
 
-    // perform static call to log address of the contract
-    const deployedAddress = await deployerContract.deploy.staticCallResult(creationCode, salt);
-    console.log(`${chain.name}, address: ${deployedAddress}`);
+      // perform static call to log address of the contract
+      const deployedAddress = await deployerContract.deploy.staticCallResult(creationCode, salt);
+      console.log(`${chain.name}, address: ${deployedAddress}`);
 
-    // perform actual deploy tx
-    await deployerContract.deploy(creationCode, salt);
+      // perform actual deploy tx
+      await deployerContract.deploy(creationCode, salt);
+    }
   }
 }
 

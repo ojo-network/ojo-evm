@@ -3,13 +3,11 @@ import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import OjoProxy from '../artifacts/contracts/OjoProxy.sol/OjoProxy.json';
 import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
-import { deployCreate2InitUpgradable } from './utils/upgradable';
+import { deployCreate2InitUpgradable, estimateDeploymentGas } from './utils/upgradable';
 
 async function main() {
-  const axelarGasReceiverAddress = process.env.AXELAR_GAS_RECEIVER_ADDRESS;
-  const create2DeployerAddress = process.env.CREATE2_DEPLOYER_ADDRESS;
+  const evmChains = JSON.parse(process.env.EVM_CHAINS!);
   const ojoChain = process.env.OJO_CHAIN;
-  const ojoAddress = process.env.OJO_ADDRESS;
   const resolveWindow = Number(process.env.RESOLVE_WINDOW);
   const assetLimit = Number(process.env.ASSET_LIMIT);
 
@@ -20,30 +18,44 @@ async function main() {
   }
 
   const mainnet = process.env.MAINNET as string
-  let evmChains = testnet_chains.map((chain) => ({ ...chain }));
+  let chains = testnet_chains.map((chain) => ({ ...chain }));
   if (mainnet === "TRUE") {
-      evmChains = mainnet_chains.map((chain) => ({ ...chain }));
+      chains = mainnet_chains.map((chain) => ({ ...chain }));
   }
 
-  const key = Number(process.env.PRIVATE_KEY);
+  const key = Number(process.env.CONTRACT_KEY);
 
-  for (const chain of evmChains) {
-      const provider = new ethers.JsonRpcProvider(chain.rpc)
-      const wallet = new Wallet(privateKey, provider);
-      const balance = await provider.getBalance(wallet.address)
-      console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
+  for (const chain of chains) {
+    if (evmChains.includes(chain.name)) {
+        const provider = new ethers.JsonRpcProvider(chain.rpc)
+        const wallet = new Wallet(privateKey, provider);
+        const balance = await provider.getBalance(wallet.address)
+        console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-      const deployedContract = await deployCreate2InitUpgradable(
-          create2DeployerAddress,
-          wallet,
-          Ojo,
-          OjoProxy,
-          [chain.gateway, axelarGasReceiverAddress],
-          ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256", "uint16"],[ojoChain, ojoAddress, resolveWindow, assetLimit]),
-          key
-      );
+        const feeData = await provider.getFeeData();
+        const gasPrice = feeData.maxFeePerGas ?? feeData.gasPrice;
+        if (!gasPrice) {
+            throw new Error('Unable to retrieve gas price');
+        }
+        const estimatedGas = await estimateDeploymentGas(wallet, Ojo, [chain.gateway, chain.gasReceiver]);
+        const deploymentCost = estimatedGas * gasPrice;
 
-      console.log(`${chain.name}, address: ${await deployedContract.getAddress()}`);
+        if (balance < deploymentCost) {
+            throw new Error(`Insufficient funds in wallet for deploying on ${chain.name}, deploymentCost: ${ethers.formatEther(deploymentCost.toString())} ${chain.tokenSymbol}`);
+        }
+
+        const deployedContract = await deployCreate2InitUpgradable(
+            chain.create2Deployer,
+            wallet,
+            Ojo,
+            OjoProxy,
+            [chain.gateway, chain.gasReceiver],
+            ethers.AbiCoder.defaultAbiCoder().encode(["string", "string", "uint256", "uint16"],[ojoChain, chain.ojoContract, resolveWindow, assetLimit]),
+            key
+        );
+
+        console.log(`${chain.name}, address: ${await deployedContract.getAddress()}`);
+    }
   }
 }
 

@@ -22,10 +22,15 @@ interval = "24h"
 deviation = "0.05"
 destination = "Arbitrum"
 contract = "0x001"
-tokens = "100ibc/xyz"
 
 # These are the assets we want to periodically push:
 [[assets]]
 denom = "BTC"
 [[assets]]
 denom = "ETH"
+
+# This struct is used to estimate the gas prices to pay axelar
+[axelar_gas]
+denom = "ibc/xyz"
+multiplier = "1.2"
+default = "1000000"
