@@ -33,9 +33,6 @@ type RequestBody struct {
 	SourceChain        string `json:"sourceChain"`
 	ShowDetailedFees   bool   `json:"showDetailedFees"`
 }
-
-// ResponseBody defines the structure of the response body.
-// This needs to be adjusted according to the actual response structure.
 type ResponseBody struct {
 	TotalFee string `json:"totalFee"`
 	Message  string `json:"message"`
@@ -43,7 +40,7 @@ type ResponseBody struct {
 }
 
 // EstimateGasFee performs a JSON POST request to estimate gas fee on Axelar.
-// Its output is a string representing the total fee
+// Its output is a math.Int representing the total fee
 // denominated in uaxl.
 func EstimateGasFee(
 	destinationChain,
@@ -51,6 +48,7 @@ func EstimateGasFee(
 	gasLimit,
 	multiplier string,
 ) (math.Int, error) {
+	// construct and perform request
 	body := RequestBody{
 		DestinationChain:   destinationChain,
 		ExecuteData:        executeData,
@@ -63,13 +61,11 @@ func EstimateGasFee(
 	if err != nil {
 		return math.ZeroInt(), err
 	}
-
 	req, err := http.NewRequest("POST", endpointURL, bytes.NewBuffer(jsonBody))
 	if err != nil {
 		return math.ZeroInt(), err
 	}
 	req.Header.Set("Content-Type", "application/json")
-
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -77,12 +73,12 @@ func EstimateGasFee(
 	}
 	defer resp.Body.Close()
 
+	// parse response
 	responseBody := &ResponseBody{}
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return math.ZeroInt(), err
 	}
-
 	err = json.Unmarshal(respBody, responseBody)
 	if err != nil {
 		return math.ZeroInt(), err
@@ -91,6 +87,7 @@ func EstimateGasFee(
 		return math.ZeroInt(), fmt.Errorf(responseBody.Message)
 	}
 
+	// execute multiplier
 	fee, ok := math.NewIntFromString(responseBody.TotalFee)
 	if !ok {
 		return math.ZeroInt(), fmt.Errorf("failed to convert total fee to int")
@@ -99,6 +96,5 @@ func EstimateGasFee(
 	if !ok {
 		return fee, nil
 	}
-
 	return fee.Mul(m), nil
 }
