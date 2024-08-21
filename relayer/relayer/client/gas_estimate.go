@@ -88,13 +88,13 @@ func EstimateGasFee(
 	}
 
 	// execute multiplier
-	fee, ok := math.NewIntFromString(responseBody.TotalFee)
-	if !ok {
-		return math.ZeroInt(), fmt.Errorf("failed to convert total fee to int")
+	fee, err := math.LegacyNewDecFromStr(responseBody.TotalFee)
+	if err != nil {
+		return math.ZeroInt(), err
 	}
-	m, ok := math.NewIntFromString(multiplier)
-	if !ok {
-		return fee, nil
+	mul, err := math.LegacyNewDecFromStr(multiplier)
+	if err != nil {
+		return math.ZeroInt(), err
 	}
-	return fee.Mul(m), nil
+	return fee.Mul(mul).TruncateInt(), nil
 }
