@@ -29,7 +29,7 @@ Alternatively, you can download a pre-built binary from our recent [releases](ht
 
 ## Configuration
 
-The Ojo relayer uses a toml file for configuration. You can find an example [here](./relayer.example.toml).
+The Ojo relayer uses a toml file for configuration. You can find an example [here](./relayer.toml).
 
 ### `gas`
 
