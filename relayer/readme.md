@@ -8,7 +8,7 @@ Ojo Relayer is a service that anyone can run to periodically push price feeds fr
 2. Set up your configuration file
 3. Run the relayer
 
-For detailed instructions, see the [Installation](#installation), [Configuration](#configuration), and [Usage](#usage) sections.
+For detailed instructions, see the [Installation](#installation), [Configuration](#configuration), and [Running](#running) sections.
 
 ## Installation
 
