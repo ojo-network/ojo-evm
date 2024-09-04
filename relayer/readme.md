@@ -2,11 +2,24 @@
 
 Ojo Relayer is a service that anyone can run to periodically push price feeds from the Ojo blockchain to an Ojo contract deployed to an EVM chain. This service is normally run by the Ojo core team, but anyone can run it.
 
+## Quick Start
+
+1. Install the Ojo Relayer
+2. Set up your configuration file
+3. Run the relayer
+
+For detailed instructions, see the [Installation](#installation), [Configuration](#configuration), and [Usage](#usage) sections.
+
 ## Installation
 
-Use the `make install` command to install the Ojo Relayer.
+To install the Ojo Relayer:
 
-Alternatively, you can see our recent [releases](https://github.com/ojo-network/ojo-evm/releases) to see if there is a binary.
+1. Ensure you have Go 1.21 or later installed.
+2. Clone the repository: `git clone https://github.com/ojo-network/ojo-evm.git`
+3. Navigate to the project directory: `cd ojo-evm/relayer`
+4. Run `make install`
+
+Alternatively, you can download a pre-built binary from our recent [releases](https://github.com/ojo-network/ojo-evm/releases).
 
 ## Compatibility
 
@@ -112,3 +125,10 @@ default = "1000000"
 ```
 
 How much each transaction will cost in AXL is different for each chain, and will vary with the usage of each chain (for example, pushing prices to Ethereum is more expensive than Arbitrum).
+
+## Running
+
+To run the relayer, you can use the following commands:
+
+`relayer config.toml`
+`relayer version`
