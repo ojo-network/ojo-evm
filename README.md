@@ -7,6 +7,7 @@ Ojo-evm is a set of contracts which use Axelar's GMP to request data from the Oj
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Push Oracle](#push-oracle)
 - [Flow](#flow)
 - [Gas](#gas)
 - [Integration](#integration)
@@ -14,6 +15,11 @@ Ojo-evm is a set of contracts which use Axelar's GMP to request data from the Oj
   - [Alternate Example](#alternate-example)
 - [Deployments](#deployments)
 
+## Push Oracle
+
+Ojo's smart contracts also support push oracles. These are smart contracts which are chainlink interface compatible and can be used to push price data from Ojo to any receiving EVM blockchain. Our existing push oracles are documented [here](https://docs.ojo.network/integrate/evm/push-oracle).
+
+The chainlink interface is a wrapper around our base contract which allows existing DeFi applications to integrate Ojo without the need to modify their source code. This contract can be found [here](./contracts/pricefeed/PriceFeed.sol).
 
 ## Flow
 
