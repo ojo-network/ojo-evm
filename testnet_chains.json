@@ -23,9 +23,9 @@
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "",
-        "priceFeedQuotedImplementation": "0x0cA31ae4a7B6Ad4588fc79B4a6d821f9c3993961",
+        "priceFeedQuotedImplementation": "0x1A069010D7F572c97925E83a1298Df8f96893c60",
         "cloneFactory": "",
-        "cloneFactoryQuoted": "0x1B8D4dedCBEfEdd89163DAb55F627859F9ECbB41"
+        "cloneFactoryQuoted": "0x694723e8Fe9945CffDB671b02175DC55DeDf7F29"
     },
     {
         "name": "BNB Chain",
@@ -135,9 +135,9 @@
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "0x3DB6DF9EDfDcfE97D574Aa6f106C767051561Be2",
-        "priceFeedQuotedImplementation": "",
+        "priceFeedQuotedImplementation": "0x2Babd8D4BCE072e78aA288c639Ef4516fCe26d89",
         "cloneFactory": "0xab2c7cc090A45836fae04501e0454413ECA96611",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "0x4f5E3B2d64670cd8EA2329c4B028a4c07832F846"
     },
     {
         "name": "Optimism Goerli",
