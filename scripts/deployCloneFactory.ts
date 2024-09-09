@@ -25,9 +25,9 @@ async function main () {
             const balance = await provider.getBalance(wallet.address)
             console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-            const priceFeedFactory = new ethers.ContractFactory(CloneFactory.abi, CloneFactory.bytecode, wallet)
-            const priceFeed = await priceFeedFactory.deploy(chain.priceFeedImplementation)
-            console.log(`${chain.name}, address: ${await priceFeed.getAddress()}`);
+            const cloneFactoryFactory = new ethers.ContractFactory(CloneFactory.abi, CloneFactory.bytecode, wallet)
+            const cloneFactory = await cloneFactoryFactory.deploy(chain.priceFeedImplementation)
+            console.log(`${chain.name}, address: ${await cloneFactory.getAddress()}`);
         }
     }
 }

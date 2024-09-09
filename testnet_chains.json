@@ -23,9 +23,9 @@
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "",
-        "priceFeedQuotedImplementation": "",
+        "priceFeedQuotedImplementation": "0x0cA31ae4a7B6Ad4588fc79B4a6d821f9c3993961",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "0x1B8D4dedCBEfEdd89163DAb55F627859F9ECbB41"
     },
     {
         "name": "BNB Chain",

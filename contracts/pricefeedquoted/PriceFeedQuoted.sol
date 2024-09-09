@@ -40,8 +40,8 @@ contract PriceFeedQuoted is Initializable, AggregatorV3Interface {
         external
         initializer {
         priceFeedDecimals = _priceFeedDecimals;
-        _priceFeedBase = _priceFeedBase;
-        _priceFeedQuote = _priceFeedQuote;
+        priceFeedBase = _priceFeedBase;
+        priceFeedQuote = _priceFeedQuote;
     }
 
     /// @notice Amount of decimals price is denominated in.
@@ -111,16 +111,22 @@ contract PriceFeedQuoted is Initializable, AggregatorV3Interface {
         OjoTypes.PriceData memory basePriceData = ojo.getPriceData(baseAssetName);
         OjoTypes.PriceData memory quotePriceData = ojo.getPriceData(quoteAssetName);
 
-        require(quotePriceData.price > 0, "PriceFeed: Quote asset price is zero");
-
         if (basePriceData.price > INT256_MAX || quotePriceData.price > INT256_MAX) {
-            revert UnsafeUintToIntConversion(basePriceData.price > INT256_MAX ? basePriceData.price : quotePriceData.price);
+            uint256 unsafeValue = basePriceData.price > INT256_MAX
+                ? basePriceData.price
+                : quotePriceData.price;
+            revert UnsafeUintToIntConversion(unsafeValue);
         }
 
-        answer = int256(basePriceData.price) * 1e18 / int256(quotePriceData.price);
+        answer = 0;
+        if (quotePriceData.price != 0) {
+            answer = int256(basePriceData.price) * 1e18 / int256(quotePriceData.price);
+        }
 
         // These values are equal after chainlink’s OCR update
-        startedAt = basePriceData.resolveTime < quotePriceData.resolveTime ? basePriceData.resolveTime : quotePriceData.resolveTime;
+        startedAt = basePriceData.resolveTime < quotePriceData.resolveTime
+            ? basePriceData.resolveTime
+            : quotePriceData.resolveTime;
         updatedAt = startedAt;
 
         // roundId is always equal to answeredInRound

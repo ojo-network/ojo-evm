@@ -1,5 +1,5 @@
 import { Wallet, ethers } from "ethers";
-import CloneFactory from '../artifacts/contracts/pricefeedquoted/CloneFactory.sol/CloneFactory.json';
+import CloneFactoryQuoted from '../artifacts/contracts/pricefeedquoted/CloneFactoryQuoted.sol/CloneFactoryQuoted.json';
 import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
 
@@ -25,9 +25,9 @@ async function main () {
             const balance = await provider.getBalance(wallet.address)
             console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-            const priceFeedQuotedFactory = new ethers.ContractFactory(CloneFactory.abi, CloneFactory.bytecode, wallet)
-            const priceFeedQuoted = await priceFeedQuotedFactory.deploy(chain.priceFeedImplementation)
-            console.log(`${chain.name}, address: ${await priceFeedQuoted.getAddress()}`);
+            const cloneFactoryQuotedFactory = new ethers.ContractFactory(CloneFactoryQuoted.abi, CloneFactoryQuoted.bytecode, wallet)
+            const cloneFactoryQuoted = await cloneFactoryQuotedFactory.deploy(chain.priceFeedQuotedImplementation)
+            console.log(`${chain.name}, address: ${await cloneFactoryQuoted.getAddress()}`);
         }
     }
 }

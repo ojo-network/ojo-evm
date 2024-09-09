@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 /// @title Factory for creating PriceFeedQuoted contract clones.
 /// @notice This contract will create a PriceFeedQuoted clone and map its address to the clone creator.
 /// @dev Cloning is done with OpenZeppelin's Clones contract.
-contract CloneFactory {
+contract CloneFactoryQuoted {
     event PriceFeedQuotedCloneCreated(
         address _priceFeedCloneAddress
     );
@@ -25,7 +25,11 @@ contract CloneFactory {
     /// @param _priceFeedDecimals Amount of decimals a PriceFeed is denominiated in.
     /// @param _priceFeedBase Base asset of PriceFeed, should be set to asset symbol ticker.
     /// @param _priceFeedQuote Quote asset of PriceFeed, should be set to asset symbol ticker.
-    function createPriceFeedQuoted(uint8 _priceFeedDecimals, string calldata _priceFeedBase, string calldata _priceFeedQuote) external {
+    function createPriceFeedQuoted(
+        uint8 _priceFeedDecimals,
+        string calldata _priceFeedBase,
+        string calldata _priceFeedQuote
+        ) external {
         address priceFeedCloneAddress = Clones.clone(implementationAddress);
         PriceFeedQuoted(priceFeedCloneAddress).initialize(_priceFeedDecimals, _priceFeedBase, _priceFeedQuote);
         PriceFeedQuotedCloneAddresses[msg.sender] = priceFeedCloneAddress;

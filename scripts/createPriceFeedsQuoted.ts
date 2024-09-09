@@ -1,5 +1,5 @@
 import { Wallet, ethers } from "ethers";
-import CloneFactory from '../artifacts/contracts/pricefeedquoted/CloneFactory.sol/CloneFactory.json';
+import CloneFactoryQuoted from '../artifacts/contracts/pricefeedquoted/CloneFactoryQuoted.sol/CloneFactoryQuoted.json';
 import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
 
@@ -27,7 +27,7 @@ async function main() {
             const balance = await provider.getBalance(wallet.address)
             console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-            const cloneFactoryContract = new ethers.Contract(chain.cloneFactory, CloneFactory.abi, wallet)
+            const cloneFactoryQuotedContract = new ethers.Contract(chain.cloneFactoryQuoted, CloneFactoryQuoted.abi, wallet)
             for (const quotedPriceFeed of quotedPriceFeeds) {
                 console.log(`Deploying ${quotedPriceFeed} price feed on ${chain.name}`);
                 try {
@@ -35,13 +35,13 @@ async function main() {
 
                     console.log("baseAsset", baseAsset)
                     console.log("quoteAsset", quoteAsset)
-                    // const tx = await cloneFactoryContract.createpriceFeedQuoted(priceFeedQuotedDecimals, baseAsset, quoteAsset);
-                    // console.log(`Transaction sent: ${tx.hash}`);
+                    const tx = await cloneFactoryQuotedContract.createPriceFeedQuoted(priceFeedQuotedDecimals, baseAsset, quoteAsset);
+                    console.log(`Transaction sent: ${tx.hash}`);
 
-                    // const receipt = await tx.wait();
-                    // console.log(`Transaction mined: ${receipt.transactionHash}`);
+                    const receipt = await tx.wait();
+                    console.log(`Transaction mined: ${receipt.transactionHash}`);
                 } catch (error) {
-                    // console.error(`Failed to deploy ${quotedPriceFeed} on ${chain.name}:`, error);
+                    console.error(`Failed to deploy ${quotedPriceFeed} on ${chain.name}:`, error);
                 }
             }
         }
