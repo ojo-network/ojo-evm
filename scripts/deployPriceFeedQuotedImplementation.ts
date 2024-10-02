@@ -1,9 +1,9 @@
 import { Wallet, ethers } from "ethers";
-import CloneFactory from '../artifacts/contracts/pricefeed/CloneFactory.sol/CloneFactory.json';
+import PriceFeedQuoted from '../artifacts/contracts/pricefeedquoted/PriceFeedQuoted.sol/PriceFeedQuoted.json';
 import testnet_chains from '../testnet_chains.json';
 import mainnet_chains from '../mainnet_chains.json';
 
-async function main () {
+async function main() {
     const evmChains = JSON.parse(process.env.EVM_CHAINS!);
 
     const privateKey = process.env.PRIVATE_KEY;
@@ -25,9 +25,9 @@ async function main () {
             const balance = await provider.getBalance(wallet.address)
             console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
-            const cloneFactoryFactory = new ethers.ContractFactory(CloneFactory.abi, CloneFactory.bytecode, wallet)
-            const cloneFactory = await cloneFactoryFactory.deploy(chain.priceFeedImplementation)
-            console.log(`${chain.name}, address: ${await cloneFactory.getAddress()}`);
+            const priceFeedQuotedFactory = new ethers.ContractFactory(PriceFeedQuoted.abi, PriceFeedQuoted.bytecode, wallet)
+            const priceFeedQuoted = await priceFeedQuotedFactory.deploy(chain.ojoContract)
+            console.log(`${chain.name}, address: ${await priceFeedQuoted.getAddress()}`);
         }
     }
 }

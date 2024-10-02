@@ -9,7 +9,9 @@
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "0xa1aB70C0F3725AcA1D1e85Bd4402Dd2d5F6AFf19",
-        "cloneFactory": "0xd285A4F0Ad1BB6b1Db8cD3dD839E9f423938ef9E"
+        "priceFeedQuotedImplementation": "",
+        "cloneFactory": "0xd285A4F0Ad1BB6b1Db8cD3dD839E9f423938ef9E",
+        "cloneFactoryQuoted": ""
     },
     {
         "name": "Optimism",
@@ -21,7 +23,9 @@
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "0xfaC9d315b9b558e10eBdb0462aA42577aADe6601",
-        "cloneFactory": "0x02Ed15B70D4dE1209c3Dd5a75195CB3f3dDB8B07"
+        "priceFeedQuotedImplementation": "",
+        "cloneFactory": "0x02Ed15B70D4dE1209c3Dd5a75195CB3f3dDB8B07",
+        "cloneFactoryQuoted": ""
     },
     {
         "name": "Base",
@@ -33,7 +37,9 @@
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "0x09d43904C8ABd470df1B793df68904A9714558CF",
-        "cloneFactory": "0xfaC9d315b9b558e10eBdb0462aA42577aADe6601"
+        "priceFeedQuotedImplementation": "",
+        "cloneFactory": "0xfaC9d315b9b558e10eBdb0462aA42577aADe6601",
+        "cloneFactoryQuoted": ""
     },
     {
         "name": "Ethereum",
@@ -45,6 +51,8 @@
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "0xde471274F1B684476d341eB131224F389AD4A270",
-        "cloneFactory": "0x710C8a3c8CB393cA24748849de3585b5C48D4D0c"
+        "priceFeedQuotedImplementation": "",
+        "cloneFactory": "0x710C8a3c8CB393cA24748849de3585b5C48D4D0c",
+        "cloneFactoryQuoted": ""
     }
 ]
