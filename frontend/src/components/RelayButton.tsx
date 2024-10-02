@@ -1,5 +1,4 @@
 import React from 'react';
-import Ojo from '../artifacts/contracts/Ojo.sol/Ojo.json';
 import MockOjo from '../artifacts/contracts/MockOjo.sol/MockOjo.json';
 import IERC20 from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IERC20.sol/IERC20.json'
 import IAxelarGateway from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IAxelarGateway.sol/IAxelarGateway.json'
@@ -11,7 +10,6 @@ import {
 } from "@axelar-network/axelarjs-sdk";
 import { ethers } from 'ethers';
 import { useNetwork } from 'wagmi';
-const ojoAddress = import.meta.env.VITE_OJO_ADDRESS as `0x${string}`;
 const mockOjoAddress = import.meta.env.VITE_MOCK_OJO_ADDRESS as `0x${string}`;
 const environment = import.meta.env.VITE_ENVIRONMENT as Environment;
 
@@ -35,8 +33,8 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
             const signer = await provider.getSigner();
 
             // check amount of assets requested to be relayed is not over limit
-            const ojoContract = new ethers.Contract(ojoAddress, Ojo.abi, signer);
-            const assetLimit = await ojoContract.assetLimit();
+           //  const ojoContract = new ethers.Contract(ojoAddress, Ojo.abi, signer);
+            const assetLimit = 1;
             if (assetNames.length > assetLimit) {
                 alert("Cannot relay more than " + assetLimit + " assets at one time")
                 return
@@ -46,8 +44,21 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
             let tokenAddress;
             if (symbol) {
                 const axelarGatewayAddress = axelarGatewayAddresses[chain.name];
+                // log address
+                console.log("axelarGatewayAddress", axelarGatewayAddress);
                 const axelarGatewayContract = new ethers.Contract(axelarGatewayAddress, IAxelarGateway.abi, signer);
-                tokenAddress = await axelarGatewayContract.tokenAddresses(symbol);
+
+                // Convert symbol to uppercase and trim any whitespace
+                const formattedSymbol = symbol.toUpperCase().trim();
+
+                try {
+                    tokenAddress = await axelarGatewayContract.tokenAddresses(formattedSymbol);
+                    console.log(`Token address for ${formattedSymbol}: ${tokenAddress}`);
+                } catch (error) {
+                    console.error(`Error fetching token address for ${formattedSymbol}:`, error);
+                    alert(`Failed to fetch token address for ${formattedSymbol}. Please check the console for details.`);
+                    return;
+                }
             }
 
             // estimate axelar gmp fee
@@ -56,7 +67,7 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
             const gasFee = await api.estimateGasFee(
                 axelarChains[chain?.name],
                 "ojo",
-                GasToken.ETH,
+                GasToken.AXL,
                 700000,
                 2,
             );
