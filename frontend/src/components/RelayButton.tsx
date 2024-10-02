@@ -62,7 +62,6 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
             }
 
             // estimate axelar gmp fee
-
             const api = new AxelarQueryAPI({ environment: environment });
             const gasFee = await api.estimateGasFee(
                 axelarChains[chain?.name],
