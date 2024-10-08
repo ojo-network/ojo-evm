@@ -29,6 +29,26 @@ interface IOjo {
         bytes calldata commandParams
     ) external payable;
 
+    /// @notice Triggers the relaying of price data from the Ojo Network to the Ojo contract and uses said price data
+    /// when calling the specified contract method at the specified contract address. Uses ERC-20 token for gas payment
+    /// instead of native gas.
+    /// @dev Reverts if contract method call does not succeed.
+    /// @param assetNames List of assets to be relayed from the Ojo Network and used by the contract method.
+    /// @param contractAddress Address of contract containing the contract method to be called.
+    /// @param commandSelector First four bytes of the Keccak-256 hash of the contract method to be called.
+    /// @param commandParams Abi encoded parameters to be used when calling the contract method (excluding assetNames
+    /// parameter).
+    /// @param gasToken The address of the ERC-20 token used to pay for gas.
+    /// @param gasFeeAmount The amount of tokens to pay for gas.
+    function callContractMethodWithOjoPriceDataNonNativeGas(
+        bytes32[] calldata assetNames,
+        address contractAddress,
+        bytes4 commandSelector,
+        bytes calldata commandParams,
+        address gasToken,
+        uint256 gasFeeAmount
+    ) external;
+
     /// @notice Triggers the relaying of price data from the Ojo Network to the Ojo contract with an ERC-20 token for
     /// and uses said price data when calling the specified contract method at the specified contract address.
     /// @dev Reverts if contract method call does not succeed.
@@ -47,6 +67,30 @@ interface IOjo {
         string memory symbol,
         uint256 amount
     ) external payable;
+
+    /// @notice Triggers the relaying of price data from the Ojo Network to the Ojo contract with an ERC-20 token for
+    /// and uses said price data when calling the specified contract method at the specified contract address. Uses
+    /// ERC-20 token for gas payment instead of native gas.
+    /// @dev Reverts if contract method call does not succeed.
+    /// @param assetNames List of assets to be relayed from the Ojo Network and used by the contract method.
+    /// @param contractAddress Address of contract containing the contract method to be called.
+    /// @param commandSelector First four bytes of the Keccak-256 hash of the contract method to be called.
+    /// @param commandParams Abi encoded parameters to be used when calling the contract method (excluding assetNames
+    /// parameter).
+    /// @param symbol The symbol of the token to be sent with the call.
+    /// @param amount The amount of tokens to be sent with the call.
+    /// @param gasToken The address of the ERC-20 token used to pay for gas.
+    /// @param gasFeeAmount The amount of tokens to pay for gas.
+    function callContractMethodWithOjoPriceDataAndTokenNonNativeGas(
+        bytes32[] calldata assetNames,
+        address contractAddress,
+        bytes4 commandSelector,
+        bytes calldata commandParams,
+        string memory symbol,
+        uint256 amount,
+        address gasToken,
+        uint256 gasFeeAmount
+    ) external;
 
     /// @notice Returns the price data of a specified asset.
     /// @dev Price data is stored in a mapping, so requesting the price data of a non existent asset will return the

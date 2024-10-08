@@ -35,6 +35,26 @@ contract MockOjo {
         );
     }
 
+    function relayOjoPriceDataNonNativeGas(
+        bytes32[] calldata assetNames,
+        address gasToken,
+        uint256 gasFeeAmount
+    ) external payable {
+        IERC20(gasToken).transferFrom(msg.sender, address(this), gasFeeAmount);
+        IERC20(gasToken).approve(address(ojo), gasFeeAmount);
+
+        bytes memory commandParams = "0x";
+
+        ojo.callContractMethodWithOjoPriceDataNonNativeGas(
+            assetNames,
+            address(this),
+            OjoTypes.EMPTY_COMMAND_SELECTOR,
+            commandParams,
+            gasToken,
+            gasFeeAmount
+        );
+    }
+
     function relayOjoPriceDataWithToken(
         bytes32[] calldata assetNames,
         string memory symbol,
@@ -53,6 +73,34 @@ contract MockOjo {
             commandParams,
             symbol,
             amount
+        );
+    }
+
+    function relayOjoPriceDataWithTokenNonNativeGas(
+        bytes32[] calldata assetNames,
+        string memory symbol,
+        uint256 amount,
+        address tokenAddress,
+        address gasToken,
+        uint256 gasFeeAmount
+    ) external payable {
+        IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
+        IERC20(tokenAddress).approve(address(ojo), amount);
+
+        IERC20(gasToken).transferFrom(msg.sender, address(this), gasFeeAmount);
+        IERC20(gasToken).approve(address(ojo), gasFeeAmount);
+
+        bytes memory commandParams = "0x";
+
+        ojo.callContractMethodWithOjoPriceDataAndTokenNonNativeGas(
+            assetNames,
+            address(this),
+            OjoTypes.EMPTY_COMMAND_SELECTOR,
+            commandParams,
+            symbol,
+            amount,
+            gasToken,
+            gasFeeAmount
         );
     }
 
