@@ -8,7 +8,7 @@ import "../mellow-lrt/interfaces/IVault.sol";
 /// @title Contract for retreiving a Mellow LRT Vault's exchange rate value with chainlink's AggregatorV3Interface
 /// implemented.
 /// @author Ojo Network (https://docs.ojo.network/)
-contract PriceFeedQuoted is Initializable, AggregatorV3Interface {
+contract MellowPriceFeed is Initializable, AggregatorV3Interface {
     uint8 private priceFeedDecimals;
 
     string private priceFeedBase;
