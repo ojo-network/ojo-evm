@@ -41,7 +41,7 @@ async function main() {
 
                     console.log("baseAsset", baseAsset)
                     console.log("quoteAsset", quoteAsset)
-                    const tx = await cloneFactoryMellowContract.createMellowPriceFeed(mellowPriceFeedDecimals, mellowVaults[i], baseAsset, quoteAsset);
+                    const tx = await cloneFactoryMellowContract.createMellowPriceFeed(mellowVaults[i], mellowPriceFeedDecimals, baseAsset, quoteAsset);
                     console.log(`Transaction sent: ${tx.hash}`);
 
                     const receipt = await tx.wait();
