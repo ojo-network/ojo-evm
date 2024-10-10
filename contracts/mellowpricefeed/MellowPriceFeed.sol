@@ -15,7 +15,7 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
 
     string private priceFeedQuote;
 
-    IVault public immutable vault;
+    IVault public vault;
 
     uint80 constant DEFAULT_ROUND = 1;
 
@@ -25,20 +25,19 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
 
     error GetRoundDataCanBeOnlyCalledWithLatestRound(uint80 requestedRoundId);
 
-    error UnsafeUintToIntConversion(uint256 value);
-
-    constructor(address vault_) {
-        vault = IVault(vault_);
-    }
-
     /// @notice Initialize clone of this contract.
     /// @dev This function is used in place of a constructor in proxy contracts.
+    /// @param _vault Address of Mellow LRT vault.
     /// @param _priceFeedDecimals Amount of decimals a PriceFeed is denominiated in.
     /// @param _priceFeedBase Base asset of PriceFeed.
     /// @param _priceFeedQuote Quote asset of PriceFeed.
-    function initialize(uint8 _priceFeedDecimals, string calldata _priceFeedBase, string calldata _priceFeedQuote)
-        external
-        initializer {
+    function initialize(
+        address _vault,
+        uint8 _priceFeedDecimals,
+        string calldata _priceFeedBase,
+        string calldata _priceFeedQuote
+        ) external initializer {
+        vault = IVault(_vault);
         priceFeedDecimals = _priceFeedDecimals;
         priceFeedBase = _priceFeedBase;
         priceFeedQuote = _priceFeedQuote;
@@ -105,14 +104,12 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
         uint80 answeredInRound
         ) {
         roundId = latestRound();
-        bytes32 baseAssetName = bytes32(bytes(priceFeedBase));
-        bytes32 quoteAssetName = bytes32(bytes(priceFeedQuote));
 
         IVault.ProcessWithdrawalsStack memory processWithdrawalsStack = vault.calculateStack();
 
         answer = 0;
         if (processWithdrawalsStack.totalSupply != 0) {
-            answer = int256(processWithdrawalsStack.totalSupply) * 1e18 / int256(processWithdrawalsStack.totalSupply);
+            answer = int256(processWithdrawalsStack.totalValue) * 1e18 / int256(processWithdrawalsStack.totalSupply);
         }
 
         // These values are equal after chainlink’s OCR update
