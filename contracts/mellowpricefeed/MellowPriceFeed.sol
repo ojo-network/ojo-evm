@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-import "../mellow-lrt/interfaces/IVault.sol";
+import "../mellow-lrt/interfaces/oracles/IManagedRatiosOracle.sol";
 
 /// @title Contract for retreiving a Mellow LRT Vault's exchange rate value with chainlink's AggregatorV3Interface
 /// implemented.
@@ -15,7 +15,9 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
 
     string private priceFeedQuote;
 
-    IVault public vault;
+    IManagedRatiosOracle public managedRatiosOracle;
+
+    address public vault;
 
     uint80 constant DEFAULT_ROUND = 1;
 
@@ -24,6 +26,10 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
     uint256 internal constant INT256_MAX = uint256(type(int256).max);
 
     error GetRoundDataCanBeOnlyCalledWithLatestRound(uint80 requestedRoundId);
+
+    constructor(address managedRatiosOracle_) {
+        managedRatiosOracle = IManagedRatiosOracle(managedRatiosOracle_);
+    }
 
     /// @notice Initialize clone of this contract.
     /// @dev This function is used in place of a constructor in proxy contracts.
@@ -37,7 +43,7 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
         string calldata _priceFeedBase,
         string calldata _priceFeedQuote
         ) external initializer {
-        vault = IVault(_vault);
+        vault = _vault;
         priceFeedDecimals = _priceFeedDecimals;
         priceFeedBase = _priceFeedBase;
         priceFeedQuote = _priceFeedQuote;
@@ -105,15 +111,15 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
         ) {
         roundId = latestRound();
 
-        IVault.ProcessWithdrawalsStack memory processWithdrawalsStack = vault.calculateStack();
+        uint128[] memory ratiosX96 = managedRatiosOracle.getTargetRatiosX96(vault, true);
 
         answer = 0;
-        if (processWithdrawalsStack.totalSupply != 0) {
-            answer = int256(processWithdrawalsStack.totalValue) * 1e18 / int256(processWithdrawalsStack.totalSupply);
+        if (ratiosX96.length != 0) {
+            answer = int256(uint256(ratiosX96[0])) * 1e18 / int256(managedRatiosOracle.Q96());
         }
 
         // These values are equal after chainlink’s OCR update
-        startedAt = processWithdrawalsStack.timestamp;
+        startedAt = block.timestamp;
         updatedAt = startedAt;
 
         // roundId is always equal to answeredInRound
