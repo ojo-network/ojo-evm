@@ -15,7 +15,7 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
 
     string private priceFeedQuote;
 
-    IManagedRatiosOracle public managedRatiosOracle;
+    IManagedRatiosOracle public immutable managedRatiosOracle;
 
     address public vault;
 
