@@ -8,10 +8,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Ethereum Sepolia",
@@ -22,10 +25,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "0x1A069010D7F572c97925E83a1298Df8f96893c60",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": "0x694723e8Fe9945CffDB671b02175DC55DeDf7F29"
+        "cloneFactoryQuoted": "0x694723e8Fe9945CffDB671b02175DC55DeDf7F29",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "BNB Chain",
@@ -36,10 +42,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Polygon Mumbai",
@@ -50,10 +59,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Polygon zkEVM",
@@ -64,10 +76,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Avalanche Fuji C-Chain",
@@ -78,10 +93,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Fantom",
@@ -92,10 +110,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Moonbase",
@@ -106,10 +127,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Arbitrum Goerli",
@@ -120,8 +144,10 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": ""
     },
@@ -134,10 +160,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "0x3DB6DF9EDfDcfE97D574Aa6f106C767051561Be2",
         "priceFeedQuotedImplementation": "0x2Babd8D4BCE072e78aA288c639Ef4516fCe26d89",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "0xab2c7cc090A45836fae04501e0454413ECA96611",
-        "cloneFactoryQuoted": "0x4f5E3B2d64670cd8EA2329c4B028a4c07832F846"
+        "cloneFactoryQuoted": "0x4f5E3B2d64670cd8EA2329c4B028a4c07832F846",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Optimism Goerli",
@@ -148,10 +177,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Optimism Sepolia",
@@ -162,10 +194,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "0x48B10B538B7E5af4CbFd93B1C4d36668e8F6F644",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "0xe9c4145FCeDdc19bc9B788C5d16cF08AD70d3850",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Base Goerli",
@@ -176,10 +211,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Base Sepolia",
@@ -190,10 +228,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "0x09d43904C8ABd470df1B793df68904A9714558CF",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "0x02Ed15B70D4dE1209c3Dd5a75195CB3f3dDB8B07",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Mantle",
@@ -204,10 +245,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Alfajores",
@@ -218,10 +262,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Kava",
@@ -232,10 +279,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Filecoin Calibration",
@@ -246,10 +296,13 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Linea Goerli",
@@ -260,9 +313,12 @@
         "gasReceiver": "0xbE406F0189A0B4cf3A05C286473D23791Dd44Cc6",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     }
 ]
