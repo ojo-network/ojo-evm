@@ -8,10 +8,13 @@
         "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "0xa1aB70C0F3725AcA1D1e85Bd4402Dd2d5F6AFf19",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "0xd285A4F0Ad1BB6b1Db8cD3dD839E9f423938ef9E",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Optimism",
@@ -22,10 +25,13 @@
         "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "0xfaC9d315b9b558e10eBdb0462aA42577aADe6601",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "0x02Ed15B70D4dE1209c3Dd5a75195CB3f3dDB8B07",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Base",
@@ -36,23 +42,29 @@
         "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "",
         "priceFeedImplementation": "0x09d43904C8ABd470df1B793df68904A9714558CF",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "",
         "cloneFactory": "0xfaC9d315b9b558e10eBdb0462aA42577aADe6601",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": ""
     },
     {
         "name": "Ethereum",
         "chainId": 1,
         "gateway": "0x4F4495243837681061C4743b74B3eEdf548D56A5",
-        "rpc": "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        "rpc": "https://mainnet.infura.io/v3/55b264f8825c40fbb14833c75b453ded",
         "tokenSymbol": "ETH",
         "gasReceiver": "0x2d5d7d31F671F86C782533cc367F14109a082712",
         "ojoContract": "0x5BB3E85f91D08fe92a3D123EE35050b763D6E6A7",
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
+        "managedRatiosOracle": "0x955Ff4Cc738cDC009d2903196d1c94C8Cfb4D55d",
         "priceFeedImplementation": "0xde471274F1B684476d341eB131224F389AD4A270",
         "priceFeedQuotedImplementation": "",
+        "mellowPriceFeedImplementation": "0xd93274d286574Dab0BA6D8363F0F31E74df5814c",
         "cloneFactory": "0x710C8a3c8CB393cA24748849de3585b5C48D4D0c",
-        "cloneFactoryQuoted": ""
+        "cloneFactoryQuoted": "",
+        "cloneFactoryMellow": "0x48B10B538B7E5af4CbFd93B1C4d36668e8F6F644"
     }
 ]
