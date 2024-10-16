@@ -7,7 +7,7 @@ type AssetFormParameters = {
 }
 
 const SymbolDropdown: React.FC<AssetFormParameters> = ({ symbol, setSymbol }) => {
-  const feeTokens = ["aUSDC"];
+  const feeTokens = ["AXL"];
 
   const handleSelectSymbol = (key: any) => {
     setSymbol(key);
