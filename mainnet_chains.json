@@ -58,9 +58,9 @@
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "0xde471274F1B684476d341eB131224F389AD4A270",
         "priceFeedQuotedImplementation": "",
-        "mellowPriceFeedImplementation": "0xd93274d286574Dab0BA6D8363F0F31E74df5814c",
+        "mellowPriceFeedImplementation": "0xc2E105535132E588b5D1764A0b9472e5537FA9cD",
         "cloneFactory": "0x710C8a3c8CB393cA24748849de3585b5C48D4D0c",
         "cloneFactoryQuoted": "",
-        "cloneFactoryMellow": "0x48B10B538B7E5af4CbFd93B1C4d36668e8F6F644"
+        "cloneFactoryMellow": "0x721c05f08308Bcce5C62e342070564Fd4441ec32"
     }
 ]
