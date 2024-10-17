@@ -115,7 +115,7 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
 
         answer = 0;
         if (ratiosX96.length != 0) {
-            answer = int256(uint256(ratiosX96[0])) * 1e18 / int256(managedRatiosOracle.Q96());
+            answer = int256(uint256(ratiosX96[0])) * int256(10**priceFeedDecimals) / int256(managedRatiosOracle.Q96());
         }
 
         // These values are equal after chainlink’s OCR update
