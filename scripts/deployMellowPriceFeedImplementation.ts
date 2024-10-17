@@ -26,7 +26,7 @@ async function main() {
             console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
             const mellowPriceFeedFactory = new ethers.ContractFactory(MellowPriceFeed.abi, MellowPriceFeed.bytecode, wallet)
-            const mellowPriceFeed = await mellowPriceFeedFactory.deploy(chain.managedRatiosOracle)
+            const mellowPriceFeed = await mellowPriceFeedFactory.deploy()
             console.log(`${chain.name}, address: ${await mellowPriceFeed.getAddress()}`);
         }
     }
