@@ -120,19 +120,19 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
 
         IPriceOracle priceOracle = IPriceOracle(vault_.configurator().priceOracle());
 
-        uint256 tvlUSD = 0;
-        uint256 quoteValueUSD = 0;
+        answer = int256(10**priceFeedDecimals);
+        uint256 totalTvl = 0;
+        uint256 quoteValue = 0;
         for (uint256 i = 0; i < tokens.length; i++) {
             uint256 priceX96 = priceOracle.priceX96(vault, tokens[i]);
             if (tokens[i] == quoteAsset) {
-                quoteValueUSD += FullMath.mulDivRoundingUp(totalAmounts[i], priceX96, vault_.Q96());
+                quoteValue += FullMath.mulDivRoundingUp(totalAmounts[i], priceX96, vault_.Q96());
             }
-            tvlUSD += FullMath.mulDivRoundingUp(totalAmounts[i], priceX96, vault_.Q96());
+            totalTvl += FullMath.mulDivRoundingUp(totalAmounts[i], priceX96, vault_.Q96());
         }
 
-        answer = 0;
-        if (tvlUSD != 0) {
-            answer = int256(quoteValueUSD) * int256(10**priceFeedDecimals) / int256(tvlUSD);
+        if (totalTvl != 0) {
+            answer = int256(FullMath.mulDiv(quoteValue, uint256(answer), totalTvl));
         }
 
         // These values are equal after chainlink’s OCR update
