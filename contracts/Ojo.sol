@@ -52,6 +52,37 @@ contract Ojo is IOjo, AxelarExpressExecutable, Upgradable {
         gateway.callContract(ojoChain, ojoAddress, payloadWithVersion);
     }
 
+    function callContractMethodWithOjoPriceDataNonNativeGas(
+        bytes32[] calldata assetNames,
+        address contractAddress,
+        bytes4 commandSelector,
+        bytes calldata commandParams,
+        address gasToken,
+        uint256 gasFeeAmount
+    ) external {
+        require(assetNames.length <= assetLimit, "Number of assets requested is over limit");
+
+        bytes memory payloadWithVersion = abi.encodePacked(
+            bytes4(uint32(0)), // version number
+            abi.encode(assetNames, contractAddress, commandSelector, commandParams, block.timestamp) // payload
+        );
+
+        IERC20(gasToken).transferFrom(msg.sender, address(this), gasFeeAmount);
+        IERC20(gasToken).approve(address(gasReceiver), gasFeeAmount);
+
+        gasReceiver.payGasForContractCall(
+            address(this),
+            ojoChain,
+            ojoAddress,
+            payloadWithVersion,
+            gasToken,
+            gasFeeAmount,
+            msg.sender
+        );
+
+        gateway.callContract(ojoChain, ojoAddress, payloadWithVersion);
+    }
+
     function callContractMethodWithOjoPriceDataAndToken(
         bytes32[] calldata assetNames,
         address contractAddress,
@@ -78,6 +109,45 @@ contract Ojo is IOjo, AxelarExpressExecutable, Upgradable {
             payloadWithVersion,
             symbol,
             amount,
+            msg.sender
+        );
+
+        gateway.callContractWithToken(ojoChain, ojoAddress, payloadWithVersion, symbol, amount);
+    }
+
+    function callContractMethodWithOjoPriceDataAndTokenNonNativeGas(
+        bytes32[] calldata assetNames,
+        address contractAddress,
+        bytes4 commandSelector,
+        bytes calldata commandParams,
+        string memory symbol,
+        uint256 amount,
+        address gasToken,
+        uint256 gasFeeAmount
+    ) external {
+        require(assetNames.length <= assetLimit, "Number of assets requested is over limit");
+
+        address tokenAddress = gateway.tokenAddresses(symbol);
+        IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
+        IERC20(tokenAddress).approve(address(gateway), amount);
+
+        IERC20(gasToken).transferFrom(msg.sender, address(this), gasFeeAmount);
+        IERC20(gasToken).approve(address(gasReceiver), gasFeeAmount);
+
+        bytes memory payloadWithVersion = abi.encodePacked(
+            bytes4(uint32(0)), // version number
+            abi.encode(assetNames, contractAddress, commandSelector, commandParams, block.timestamp) // payload
+        );
+
+        gasReceiver.payGasForContractCallWithToken(
+            address(this),
+            ojoChain,
+            ojoAddress,
+            payloadWithVersion,
+            symbol,
+            amount,
+            gasToken,
+            gasFeeAmount,
             msg.sender
         );
 
