@@ -2,8 +2,8 @@ import React from 'react';
 import MockOjo from '../artifacts/contracts/MockOjo.sol/MockOjo.json';
 import IAxelarGateway from '@axelar-network/axelar-gmp-sdk-solidity/artifacts/contracts/interfaces/IAxelarGateway.sol/IAxelarGateway.json'
 import { axelarChains, axelarGatewayAddresses, isAxelarChain, axelarChainIDs } from './lib/AxelarChains'
-import { Squid } from '@0xsquid/sdk'
-import { ChainType } from "@0xsquid/squid-types";
+import { Squid, TokenData } from '@0xsquid/sdk'
+import { ChainData, ChainType } from "@0xsquid/squid-types";
 import {
   AxelarQueryAPI,
   Environment,
@@ -90,7 +90,9 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
 
                 try {
                     axelarTokenAddress = await axelarGatewayContract.tokenAddresses(formattedSymbol);
-                    ethTokenAddress = await axelarGatewayContract.tokenAddresses("WETH");
+
+
+                    ethTokenAddress = await axelarGatewayContract.tokenAddresses("ETH");
                     console.log(`Token address for ${formattedSymbol}: ${axelarTokenAddress}`);
 
                 } catch (error) {
@@ -135,6 +137,23 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
                   axelarTokenAddress,
                 ]
               );
+
+            // Get the swap route using Squid SDK
+            const squid = getSDK()
+            await squid.init()
+
+            // get chain id selected
+            const chainId = chain?.id
+            // print chainid
+            console.log("chainId", chainId);
+
+            const fromToken = squid.tokens.find(
+              t =>
+                t.symbol === "WETH" &&
+                t.chainId === chainId.toString()
+            );
+            // log fromToken
+            console.log("fromToken", fromToken);
 
             const postHooks = {
                 chainType: ChainType.EVM,
@@ -210,6 +229,8 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
 
               // now multiply ETH value by 10^18
               const totalGasETHWei = totalGasETH * 10**18;
+              // print totalGasETHWei
+              console.log("Total gas for 3 months (ETH Wei):", totalGasETHWei.toString());
 
               // print in USD
               const totalGasUSD = totalGasETH * ethPrice;
@@ -222,23 +243,21 @@ const RelayPricesButton: React.FC<RelayPricesParameters> = ({ assetNames, symbol
               const params = {
                 fromAddress: signer.address,
                 fromChain: chainid,
-                fromToken: ethTokenAddress,
+                fromToken: fromToken?.address || "",
                 fromAmount: totalGasETHWei.toString(),
                 toChain: chainid,
                 toToken: axelarTokenAddress,
                 toAddress: signer.address,
-                quoteOnly: true,
+                quoteOnly: false,
                 postHooks: postHooks
             };
 
             console.log("params", params);
 
 
-            // Get the swap route using Squid SDK
-            const squid = getSDK()
-            await squid.init()
             const { route, requestId } = await squid!.getRoute(params)
             console.log("route", route);
+
 
 
             // Execute the swap transaction
