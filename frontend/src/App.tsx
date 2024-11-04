@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNetwork } from 'wagmi';
 import AssetForm from './components/AssetForm';
 import RelayButton from './components/RelayButton';
-import { estimateGasFee } from './utils/gasEstimate';
 import { isAxelarChain } from './components/lib/AxelarChains';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import axios from 'axios'; // Import axios for making HTTP requests
 
 function App() {
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
@@ -20,15 +20,16 @@ function App() {
     const updateGasFee = async () => {
       if (chain && isAxelarChain(chain.name)) {
         try {
-          const gasFee = await estimateGasFee(chain.name, "0x", "100000", "0.40");
-          if (gasFee === '') {
-            setAmount('10');
-          } else {
-            const adjustedGasFee = Math.ceil(Number(gasFee) / 1000000).toString();
-            setAmount(adjustedGasFee);
-          }
+          // Fetch gas estimate from the API
+          const response = await axios.get('https://api.agamotto-val-prod-0.ojo.network/ojo/gasestimate/v1/gasestimate?network=Arbitrum');
+          let gasEstimate = response.data.gas_estimate;
+          // divide gas estimate by 1000000
+          gasEstimate = (gasEstimate * 10 / 1000000).toString();
+
+          // Set the amount with the fetched gas estimate
+          setAmount(gasEstimate);
         } catch (error) {
-          console.error("Error estimating gas fee:", error);
+          console.error("Error fetching gas estimate:", error);
           setAmount('10');
         }
       } else {
