@@ -12,10 +12,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Ethereum Sepolia",
@@ -30,10 +32,12 @@
         "priceFeedQuotedImplementation": "0x1A069010D7F572c97925E83a1298Df8f96893c60",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "0x694723e8Fe9945CffDB671b02175DC55DeDf7F29",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Ethereum Holesky",
@@ -48,10 +52,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "0x710C8a3c8CB393cA24748849de3585b5C48D4D0c",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": "0x1bc0555c2137447160a2581837372f63835a8002"
+        "cloneFactoryYn": "0x1bc0555c2137447160a2581837372f63835a8002",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "BNB Chain",
@@ -66,10 +72,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Polygon Mumbai",
@@ -83,10 +91,13 @@
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
+        "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Polygon zkEVM",
@@ -100,9 +111,13 @@
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
+        "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
-        "cloneFactoryMellow": ""
+        "cloneFactoryMellow": "",
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Avalanche Fuji C-Chain",
@@ -117,10 +132,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Fantom",
@@ -135,10 +152,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Moonbase",
@@ -153,10 +172,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Arbitrum Goerli",
@@ -170,9 +191,12 @@
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
+        "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Arbitrum Sepolia",
@@ -187,10 +211,12 @@
         "priceFeedQuotedImplementation": "0x2Babd8D4BCE072e78aA288c639Ef4516fCe26d89",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "0xab2c7cc090A45836fae04501e0454413ECA96611",
         "cloneFactoryQuoted": "0x4f5E3B2d64670cd8EA2329c4B028a4c07832F846",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Optimism Goerli",
@@ -205,10 +231,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Optimism Sepolia",
@@ -223,10 +251,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "0xe9c4145FCeDdc19bc9B788C5d16cF08AD70d3850",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Base Goerli",
@@ -241,10 +271,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Base Sepolia",
@@ -259,10 +291,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "0x02Ed15B70D4dE1209c3Dd5a75195CB3f3dDB8B07",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Mantle",
@@ -277,10 +311,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Alfajores",
@@ -295,10 +331,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Kava",
@@ -312,10 +350,13 @@
         "priceFeedImplementation": "",
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
+        "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Filecoin Calibration",
@@ -330,10 +371,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Linea Goerli",
@@ -348,9 +391,11 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     }
 ]
