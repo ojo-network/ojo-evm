@@ -12,10 +12,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "0xd285A4F0Ad1BB6b1Db8cD3dD839E9f423938ef9E",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Optimism",
@@ -30,10 +32,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "0x02Ed15B70D4dE1209c3Dd5a75195CB3f3dDB8B07",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Base",
@@ -48,10 +52,12 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "0xfaC9d315b9b558e10eBdb0462aA42577aADe6601",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     },
     {
         "name": "Ethereum",
@@ -66,9 +72,11 @@
         "priceFeedQuotedImplementation": "",
         "mellowPriceFeedImplementation": "0xc2E105535132E588b5D1764A0b9472e5537FA9cD",
         "ynPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "",
         "cloneFactory": "0x710C8a3c8CB393cA24748849de3585b5C48D4D0c",
         "cloneFactoryQuoted": "",
         "cloneFactoryMellow": "0x721c05f08308Bcce5C62e342070564Fd4441ec32",
-        "cloneFactoryYn": ""
+        "cloneFactoryYn": "",
+        "cloneFactoryLevel": ""
     }
 ]
