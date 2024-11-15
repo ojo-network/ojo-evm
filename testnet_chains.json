@@ -32,12 +32,12 @@
         "priceFeedQuotedImplementation": "0x1A069010D7F572c97925E83a1298Df8f96893c60",
         "mellowPriceFeedImplementation": "",
         "ynPriceFeedImplementation": "",
-        "levelPriceFeedImplementation": "",
+        "levelPriceFeedImplementation": "0x9eb66bDd9097E35eE3697d4a9DbF53a8D779b4f2",
         "cloneFactory": "",
         "cloneFactoryQuoted": "0x694723e8Fe9945CffDB671b02175DC55DeDf7F29",
         "cloneFactoryMellow": "",
         "cloneFactoryYn": "",
-        "cloneFactoryLevel": ""
+        "cloneFactoryLevel": "0x562B643fDbfFFe96c6447925627BC8B872D741ad"
     },
     {
         "name": "Ethereum Holesky",
