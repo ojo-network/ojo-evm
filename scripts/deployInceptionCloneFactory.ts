@@ -26,7 +26,7 @@ async function main () {
             console.log(`${chain.name} wallet balance: ${ethers.formatEther(balance.toString())} ${chain.tokenSymbol}`);
 
             const inceptionCloneFactoryFactory = new ethers.ContractFactory(InceptionCloneFactory.abi, InceptionCloneFactory.bytecode, wallet)
-            const inceptionCloneFactory = await inceptionCloneFactoryFactory.deploy(chain.mellowPriceFeedImplementation)
+            const inceptionCloneFactory = await inceptionCloneFactoryFactory.deploy(chain.inceptionPriceFeedImplementation)
             console.log(`${chain.name}, address: ${await inceptionCloneFactory.getAddress()}`);
         }
     }
