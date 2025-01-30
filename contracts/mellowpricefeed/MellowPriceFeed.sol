@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-import "../mellow-lrt/interfaces/IVault.sol";
+import "../mellow-lrt/interfaces/IOracle.sol";
 
 /// @title Contract for retreiving a Mellow LRT Vault's exchange rate value with chainlink's AggregatorV3Interface
 /// implemented.
@@ -15,7 +15,7 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
 
     string private priceFeedQuote;
 
-    address public vault;
+    address public vaultOracle;
 
     uint80 constant DEFAULT_ROUND = 1;
 
@@ -27,17 +27,17 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
 
     /// @notice Initialize clone of this contract.
     /// @dev This function is used in place of a constructor in proxy contracts.
-    /// @param _vault Address of Mellow LRT vault.
+    /// @param _vaultOracle Address of Mellow vault oracle.
     /// @param _priceFeedDecimals Amount of decimals a PriceFeed is denominiated in.
     /// @param _priceFeedBase Base asset of PriceFeed.
     /// @param _priceFeedQuote Quote asset of PriceFeed.
     function initialize(
-        address _vault,
+        address _vaultOracle,
         uint8 _priceFeedDecimals,
         string calldata _priceFeedBase,
         string calldata _priceFeedQuote
         ) external initializer {
-        vault = _vault;
+        vaultOracle = _vaultOracle;
         priceFeedDecimals = _priceFeedDecimals;
         priceFeedBase = _priceFeedBase;
         priceFeedQuote = _priceFeedQuote;
@@ -105,13 +105,9 @@ contract MellowPriceFeed is Initializable, AggregatorV3Interface {
         ) {
         roundId = latestRound();
 
-        IVault vault_ = IVault(vault);
+        IOracle vaultOracle_ = IOracle(vaultOracle);
 
-        answer = 0;
-
-        if (vault_.totalAssets() != 0) {
-            answer = int256(vault_.totalSupply()) * 1e18 / int256(vault_.totalAssets());
-        }
+        answer = int256(vaultOracle_.getRate());
 
         // These values are equal after chainlink’s OCR update
         startedAt = block.timestamp;
