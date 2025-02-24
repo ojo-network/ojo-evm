@@ -70,12 +70,12 @@
         "create2Deployer": "0x98b2920d53612483f91f12ed7754e51b4a77919e",
         "priceFeedImplementation": "0xde471274F1B684476d341eB131224F389AD4A270",
         "priceFeedQuotedImplementation": "",
-        "mellowPriceFeedImplementation": "0xc2E105535132E588b5D1764A0b9472e5537FA9cD",
+        "mellowPriceFeedImplementation": "0x23f9cF9519bA16a5450fb6523BB5E249CaD83747",
         "inceptionPriceFeedImplementation": "0x418630F34A6E82c93a97a1b6E79B6a20C76EaD05",
         "ynPriceFeedImplementation": "",
         "cloneFactory": "0x710C8a3c8CB393cA24748849de3585b5C48D4D0c",
         "cloneFactoryQuoted": "",
-        "cloneFactoryMellow": "0x721c05f08308Bcce5C62e342070564Fd4441ec32",
+        "cloneFactoryMellow": "0xbC0e179E48aA36FD5a7Ff0D340F3DDfF6e294742",
         "cloneFactoryInception": "0x2Babd8D4BCE072e78aA288c639Ef4516fCe26d89",
         "cloneFactoryYn": ""
     }

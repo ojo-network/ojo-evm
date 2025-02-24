@@ -22,22 +22,19 @@ contract CloneFactory {
 
     /// @notice Create clone of MellowPriceFeed contract and initialize it.
     /// @dev Clone method returns address of created clone.
-    /// @param _vault Address of Mellow LRT vault.
-    /// @param _quoteAsset Address of quote asset.
+    /// @param _vaultOracle Address of Mellow vault oracle.
     /// @param _priceFeedDecimals Amount of decimals a PriceFeed is denominiated in.
     /// @param _priceFeedBase Base asset of PriceFeed, should be set to asset symbol ticker.
     /// @param _priceFeedQuote Quote asset of PriceFeed, should be set to asset symbol ticker.
     function createMellowPriceFeed(
-        address _vault,
-        address _quoteAsset,
+        address _vaultOracle,
         uint8 _priceFeedDecimals,
         string calldata _priceFeedBase,
         string calldata _priceFeedQuote
         ) external {
         address mellowPriceFeedCloneAddress = Clones.clone(implementationAddress);
         MellowPriceFeed(mellowPriceFeedCloneAddress).initialize(
-            _vault,
-            _quoteAsset,
+            _vaultOracle,
             _priceFeedDecimals,
             _priceFeedBase,
             _priceFeedQuote

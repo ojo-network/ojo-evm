@@ -7,10 +7,9 @@ async function main() {
     const evmChains = JSON.parse(process.env.EVM_CHAINS!);
     const mellowPriceFeedDecimals = process.env.PRICE_FEED_DECIMALS as any;
     const mellowPriceFeeds = JSON.parse(process.env.MELLOW_PRICE_FEEDS!);
-    const mellowVaults = JSON.parse(process.env.MELLOW_VAULTS!);
-    const mellowQuoteAssets = JSON.parse(process.env.MELLOW_QUOTE_ASSETS!);
+    const mellowVaultOracles = JSON.parse(process.env.MELLOW_VAULT_ORACLES!);
 
-    if (mellowPriceFeeds.length !== mellowVaults.length || mellowPriceFeeds.length !== mellowQuoteAssets.length) {
+    if (mellowPriceFeeds.length !== mellowVaultOracles.length) {
         throw new Error('unequal amount of mellowVaults associated with mellowPriceFeeds');
     }
 
@@ -42,7 +41,7 @@ async function main() {
 
                     console.log("baseAsset", baseAsset)
                     console.log("quoteAsset", quoteAsset)
-                    const tx = await cloneFactoryMellowContract.createMellowPriceFeed(mellowVaults[i], mellowQuoteAssets[i], mellowPriceFeedDecimals, baseAsset, quoteAsset);
+                    const tx = await cloneFactoryMellowContract.createMellowPriceFeed(mellowVaultOracles[i], mellowPriceFeedDecimals, baseAsset, quoteAsset);
                     console.log(`Transaction sent: ${tx.hash}`);
 
                     const receipt = await tx.wait();
